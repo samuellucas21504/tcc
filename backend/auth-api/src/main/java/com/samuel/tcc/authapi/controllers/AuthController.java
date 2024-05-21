@@ -4,15 +4,14 @@ import com.samuel.tcc.authapi.domain.user.User;
 import com.samuel.tcc.authapi.dto.LoginRequestDTO;
 import com.samuel.tcc.authapi.dto.LoginResponseDTO;
 import com.samuel.tcc.authapi.dto.RegisterRequestDTO;
+import com.samuel.tcc.authapi.dto.ValidationDTO;
 import com.samuel.tcc.authapi.infra.security.TokenService;
 import com.samuel.tcc.authapi.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -53,5 +52,20 @@ public class AuthController {
         }
 
         return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<Void> validateToken(@RequestBody ValidationDTO body) {
+        var tokenSubject = tokenService.validateToken(body.token());
+
+        if(tokenSubject == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        if(tokenSubject.equals(body.email())) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

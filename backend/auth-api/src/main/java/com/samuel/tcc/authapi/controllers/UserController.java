@@ -1,15 +1,20 @@
 package com.samuel.tcc.authapi.controllers;
 
+import com.samuel.tcc.authapi.infra.security.TokenService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
+@AllArgsConstructor
 public class UserController {
-    @GetMapping
-    public ResponseEntity<String> getUser() {
-        return ResponseEntity.ok("sucesso");
+    private final TokenService tokenService;
+
+    @GetMapping(value="/{token}")
+    public ResponseEntity<String> isTokenValid(@PathVariable(value="token") String token) {
+        var a = tokenService.validateToken(token);
+
+        return ResponseEntity.ok(a);
     }
 }
