@@ -29,7 +29,7 @@ public class AuthController {
         User user = repository.findByEmail(body.email())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if(passwordEncoder.matches(user.getPassword(), body.password())) {
+        if(passwordEncoder.matches(body.password(), user.getPassword())) {
             String token = tokenService.generateToken(user);
             return ResponseEntity.ok(new LoginResponseDTO(user.getName(), token));
         }
