@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/components/menu_button.dart';
-import 'package:tcc/components/streak_calendar/streak_calendar.dart';
-import 'package:tcc/components/text_button.dart';
-import 'package:tcc/components/text_section.dart';
-import 'package:tcc/components/texts/title_text.dart';
-import 'package:tcc/constants/colors.dart';
-import 'package:tcc/constants/themes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tcc/authentication/bloc/authentication_bloc.dart';
+import 'package:tcc/home/components/menu_button.dart';
+import 'package:tcc/home/components/streak_calendar/streak_calendar.dart';
+import 'package:tcc/home/components/text_button.dart';
+import 'package:tcc/home/components/text_section.dart';
+import 'package:tcc/home/components/texts/title_text.dart';
+import 'package:tcc/config/colors.dart';
+import 'package:tcc/config/themes.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  static Route<void> route() {
+    return MaterialPageRoute<void>(builder: (_) => const HomePage());
+  }
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomeState extends State<Home> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -26,37 +32,53 @@ class _HomeState extends State<Home> {
           return MenuButton(onPressed: Scaffold.of(context).openDrawer);
         }),
       ),
-      drawer: Drawer(
-        child: Theme(
-          data: Themes.themeWithTransparentDivider(context),
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              DrawerHeader(
-                child: Container(
-                  width: 56,
-                  height: 56,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: ThemeColors.surface,
-                  ),
-                  child: const Icon(
-                    Icons.person,
-                    color: ThemeColors.highlight,
-                    size: 48,
+      drawer: Builder(builder: (context) {
+        final user =
+            context.select((AuthenticationBloc bloc) => bloc.state.user);
+        return Drawer(
+          child: Theme(
+            data: Themes.themeWithTransparentDivider(context),
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                DrawerHeader(
+                  child: Container(
+                    width: 56,
+                    height: 56,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: ThemeColors.surface,
+                    ),
+                    child: const Icon(
+                      Icons.person,
+                      color: ThemeColors.highlight,
+                      size: 48,
+                    ),
                   ),
                 ),
-              ),
-              ListTile(
-                title: const Text('Home'),
-                onTap: () {
-                  print('Teste');
-                },
-              )
-            ],
+                Text(
+                  user.name!,
+                  textAlign: TextAlign.center,
+                ),
+                ListTile(
+                  title: const Text('Home'),
+                  onTap: () {
+                    print('Teste');
+                  },
+                ),
+                ListTile(
+                  title: const Text('Sair'),
+                  onTap: () {
+                    context
+                        .read<AuthenticationBloc>()
+                        .add(AuthenticationLogoutRequested());
+                  },
+                )
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
           return SingleChildScrollView(

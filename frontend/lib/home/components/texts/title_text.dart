@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/constants/colors.dart';
+import 'package:tcc/config/colors.dart';
 
 class TitleText extends Text {
   const TitleText(super.data, {super.key, super.style, super.textAlign});

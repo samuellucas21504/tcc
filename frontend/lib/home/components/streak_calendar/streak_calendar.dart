@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:tcc/components/streak_calendar/streak_day.dart';
-import 'package:tcc/components/texts/section_header_text.dart';
+import 'package:tcc/home/components/streak_calendar/streak_day.dart';
+import 'package:tcc/home/components/texts/section_header_text.dart';
 import 'package:tcc/utils/extensions/date_time_extensions.dart';
 import 'package:tcc/utils/extensions/string_extensions.dart';
 

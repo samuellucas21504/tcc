@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/components/texts/description_text.dart';
-import 'package:tcc/components/texts/title_text.dart';
+import 'package:tcc/home/components/texts/description_text.dart';
+import 'package:tcc/home/components/texts/title_text.dart';
 
 class TextSection extends StatelessWidget {
   final String title;

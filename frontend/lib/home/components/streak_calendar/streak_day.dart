@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/constants/colors.dart';
+import 'package:tcc/config/colors.dart';
 
 class StreakDay extends StatelessWidget {
   final bool active;
