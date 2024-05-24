@@ -3,7 +3,6 @@ import 'package:tcc/components/menu_button.dart';
 import 'package:tcc/components/streak_calendar/streak_calendar.dart';
 import 'package:tcc/components/text_button.dart';
 import 'package:tcc/components/text_section.dart';
-import 'package:tcc/components/texts/section_header_text.dart';
 import 'package:tcc/components/texts/title_text.dart';
 import 'package:tcc/constants/colors.dart';
 import 'package:tcc/constants/themes.dart';
