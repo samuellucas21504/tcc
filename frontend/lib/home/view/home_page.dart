@@ -1,3 +1,4 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
@@ -47,7 +48,6 @@ class _HomePageState extends State<HomePage> {
                     height: 56,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: ThemeColors.surface,
                     ),
                     child: const Icon(
                       Icons.person,
@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Text(
-                  user.name!,
+                  user.name,
                   textAlign: TextAlign.center,
                 ),
                 ListTile(
@@ -81,6 +81,9 @@ class _HomePageState extends State<HomePage> {
       }),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
+          final user =
+              context.select((AuthenticationBloc bloc) => bloc.state.user);
+
           return SingleChildScrollView(
             child: ConstrainedBox(
               constraints:
@@ -107,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const SizedBox(height: 6),
                     InteractiveButton(
-                      onPressed: () => print('a'),
+                      onPressed: () => print(user.token),
                       text: 'Marcar dia feito',
                     ),
                     const Padding(
