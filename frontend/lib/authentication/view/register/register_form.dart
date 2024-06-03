@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:tcc/login/bloc/login_bloc.dart';
-import 'package:tcc/login/models/email_confirmation.dart';
+import 'package:tcc/authentication/bloc/register/register_bloc.dart';
+import 'package:tcc/authentication/models/email_confirmation.dart';
 
-class LoginForm extends StatelessWidget {
-  const LoginForm({super.key});
+class RegisterForm extends StatelessWidget {
+  const RegisterForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return BlocListener<RegisterBloc, RegisterState>(
       listener: (context, state) {
         if (state.status.isFailure) {
           ScaffoldMessenger.of(context)
@@ -32,6 +34,18 @@ class LoginForm extends StatelessWidget {
             _PasswordInput(),
             const Padding(padding: EdgeInsets.all(12)),
             _LoginButton(),
+            const Padding(padding: EdgeInsets.all(25)),
+            const Divider(),
+            const Padding(padding: EdgeInsets.all(25)),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Já é cadastrado?',
+                style: TextStyle(
+                  color: colorScheme.surface,
+                ),
+              ),
+            ),
           ]),
         ),
       ),
@@ -42,13 +56,13 @@ class LoginForm extends StatelessWidget {
 class _UsernameInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocBuilder<RegisterBloc, RegisterState>(
       buildWhen: (previous, current) => previous.username != current.username,
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_usernameInput_textField'),
           onChanged: (username) =>
-              context.read<LoginBloc>().add(LoginUsernameChanged(username)),
+              context.read<RegisterBloc>().add(LoginUsernameChanged(username)),
           decoration: InputDecoration(
             labelText: 'Usuário',
             errorText:
@@ -63,13 +77,13 @@ class _UsernameInput extends StatelessWidget {
 class _EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocBuilder<RegisterBloc, RegisterState>(
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_emailInput_textfield'),
           onChanged: (email) =>
-              context.read<LoginBloc>().add(LoginEmailChanged(email)),
+              context.read<RegisterBloc>().add(LoginEmailChanged(email)),
           decoration: InputDecoration(
             labelText: 'Email',
             errorText:
@@ -84,14 +98,14 @@ class _EmailInput extends StatelessWidget {
 class _EmailConfirmationInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocBuilder<RegisterBloc, RegisterState>(
       buildWhen: (previous, current) =>
           previous.emailConfirmation != current.emailConfirmation,
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_emailConfirmationInput_textfield'),
           onChanged: (emailConfirmation) => context
-              .read<LoginBloc>()
+              .read<RegisterBloc>()
               .add(LoginEmailConfirmationChanged(emailConfirmation)),
           decoration: InputDecoration(
             labelText: 'Confirmação do Email',
@@ -110,13 +124,13 @@ class _EmailConfirmationInput extends StatelessWidget {
 class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocBuilder<RegisterBloc, RegisterState>(
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_passwordInput_textfield'),
           onChanged: (password) =>
-              context.read<LoginBloc>().add(LoginPasswordChanged(password)),
+              context.read<RegisterBloc>().add(LoginPasswordChanged(password)),
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'Senha',
@@ -132,30 +146,16 @@ class _PasswordInput extends StatelessWidget {
 class _LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocBuilder<RegisterBloc, RegisterState>(
       builder: (context, state) {
         return Row(
           children: [
             Expanded(
               child: ElevatedButton(
                 key: const Key('loginForm_continue_raisedButton'),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  textStyle: TextStyle(
-                    color: colorScheme.background,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  foregroundColor: colorScheme.background,
-                  disabledForegroundColor: colorScheme.background,
-                ),
                 onPressed: state.isValid
-                    ? () {
-                        context.read<LoginBloc>().add(const LoginSubmitted());
-                      }
+                    ? () =>
+                        context.read<RegisterBloc>().add(const LoginSubmitted())
                     : null,
                 child: state.status.isInProgress
                     ? const CircularProgressIndicator()

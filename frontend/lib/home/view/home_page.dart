@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tcc/authentication/bloc/authentication_bloc.dart';
+import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
 import 'package:tcc/home/components/menu_button.dart';
 import 'package:tcc/home/components/streak_calendar/streak_calendar.dart';
 import 'package:tcc/home/components/text_button.dart';

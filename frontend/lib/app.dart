@@ -1,8 +1,9 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:tcc/authentication/bloc/authentication_bloc.dart';
+import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
+import 'package:tcc/authentication/view/register/register_page.dart';
 import 'package:tcc/config/themes.dart';
-import 'package:tcc/login/view/login_page.dart';
+
 import 'package:tcc/splash/view/splash_page.dart';
 import 'package:tcc/home/view/home_page.dart';
 import 'package:user_repository/user_repository.dart';
@@ -75,7 +76,7 @@ class _AppViewState extends State<AppView> {
                 );
               case AuthenticationStatus.unauthenticated:
                 _navigator.pushAndRemoveUntil(
-                  LoginPage.route(),
+                  RegisterPage.route(),
                   (route) => false,
                 );
               case AuthenticationStatus.unknown:

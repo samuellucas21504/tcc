@@ -2,18 +2,18 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:tcc/login/models/email.dart';
-import 'package:tcc/login/models/email_confirmation.dart';
-import 'package:tcc/login/models/password.dart';
-import 'package:tcc/login/models/username.dart';
+import 'package:tcc/authentication/models/email.dart';
+import 'package:tcc/authentication/models/email_confirmation.dart';
+import 'package:tcc/authentication/models/password.dart';
+import 'package:tcc/authentication/models/username.dart';
 
-part 'login_event.dart';
-part 'login_state.dart';
+part 'register_event.dart';
+part 'register_state.dart';
 
-class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc({required AuthenticationRepository authenticationRepository})
+class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
+  RegisterBloc({required AuthenticationRepository authenticationRepository})
       : _authenticationRepository = authenticationRepository,
-        super(const LoginState()) {
+        super(const RegisterState()) {
     on<LoginUsernameChanged>(_onUsernameChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
     on<LoginEmailChanged>(_onEmailChanged);
@@ -25,11 +25,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   void _onUsernameChanged(
     LoginUsernameChanged event,
-    Emitter<LoginState> emit,
+    Emitter<RegisterState> emit,
   ) {
     final username = Username.dirty(event.username);
     emit(state.copyWith(
         username: username,
+        status: ifFailureChangeStatus(),
         isValid: Formz.validate([
           state.password,
           state.email,
@@ -40,12 +41,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   void _onPasswordChanged(
     LoginPasswordChanged event,
-    Emitter<LoginState> emit,
+    Emitter<RegisterState> emit,
   ) {
     final password = Password.dirty(event.password);
 
     emit(state.copyWith(
         password: password,
+        status: ifFailureChangeStatus(),
         isValid: Formz.validate([
           state.username,
           state.email,
@@ -56,7 +58,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   void _onEmailChanged(
     LoginEmailChanged event,
-    Emitter<LoginState> emit,
+    Emitter<RegisterState> emit,
   ) {
     final email = Email.dirty(event.email);
     final emailConfirmation = EmailConfirmation.dirty(
@@ -65,6 +67,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(state.copyWith(
         email: email,
         emailConfirmation: emailConfirmation,
+        status: ifFailureChangeStatus(),
         isValid: Formz.validate([
           state.username,
           state.password,
@@ -75,37 +78,49 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   void _onEmailConfirmationChanged(
     LoginEmailConfirmationChanged event,
-    Emitter<LoginState> emit,
+    Emitter<RegisterState> emit,
   ) {
     final emailConfirmation = EmailConfirmation.dirty(
         email: state.email.value, value: event.emailConfirmation);
 
     emit(state.copyWith(
         emailConfirmation: emailConfirmation,
+        status: ifFailureChangeStatus(),
         isValid: Formz.validate([
           state.username,
           state.password,
           state.email,
-          state.emailConfirmation,
+          emailConfirmation,
         ])));
   }
 
   Future<void> _onSubmitted(
     LoginSubmitted event,
-    Emitter<LoginState> emit,
+    Emitter<RegisterState> emit,
   ) async {
     if (state.isValid) {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+
       try {
-        await _authenticationRepository.register(
-          username: state.username.value,
+        final dto = await _authenticationRepository.register(
+          name: state.username.value,
           email: state.email.value,
           password: state.password.value,
         );
+        print(dto.token);
+
         emit(state.copyWith(status: FormzSubmissionStatus.success));
       } catch (_) {
         emit(state.copyWith(status: FormzSubmissionStatus.failure));
       }
     }
+  }
+
+  FormzSubmissionStatus ifFailureChangeStatus() {
+    if (state.status.isFailure) {
+      return FormzSubmissionStatus.initial;
+    }
+
+    return state.status;
   }
 }

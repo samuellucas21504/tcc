@@ -30,14 +30,14 @@ public class AuthController {
 
         if(passwordEncoder.matches(body.password(), user.getPassword())) {
             String token = tokenService.generateToken(user);
-            return ResponseEntity.ok(new LoginResponseDTO(user.getName(), token));
+            return ResponseEntity.ok(new LoginResponseDTO(user.getName(), user.getEmail(), token));
         }
 
         return ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody RegisterRequestDTO body) {
+    public ResponseEntity<LoginResponseDTO> register(@RequestBody RegisterRequestDTO body) {
         Optional<User> user = repository.findByEmail(body.email());
 
         if(user.isEmpty()) {
@@ -48,7 +48,7 @@ public class AuthController {
             repository.save(newUser);
 
             String token = tokenService.generateToken(newUser);
-            return ResponseEntity.ok(new LoginResponseDTO(newUser.getName(), token));
+            return ResponseEntity.ok(new LoginResponseDTO(newUser.getName(), newUser.getEmail(), token));
         }
 
         return ResponseEntity.badRequest().build();
@@ -62,10 +62,6 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        if(tokenSubject.equals(body.email())) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,14 +1,14 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tcc/login/bloc/login_bloc.dart';
-import 'package:tcc/login/view/login_form.dart';
+import 'package:tcc/authentication/bloc/register/register_bloc.dart';
+import 'package:tcc/authentication/view/register/register_form.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
 
   static Route<void> route() {
-    return MaterialPageRoute(builder: (_) => const LoginPage());
+    return MaterialPageRoute(builder: (_) => const RegisterPage());
   }
 
   @override
@@ -19,12 +19,12 @@ class LoginPage extends StatelessWidget {
           child: SingleChildScrollView(
             child: BlocProvider(
               create: (context) {
-                return LoginBloc(
+                return RegisterBloc(
                   authenticationRepository:
                       RepositoryProvider.of<AuthenticationRepository>(context),
                 );
               },
-              child: const LoginForm(),
+              child: const RegisterForm(),
             ),
           ),
         ),

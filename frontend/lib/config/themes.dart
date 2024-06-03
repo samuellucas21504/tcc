@@ -60,12 +60,26 @@ class Themes {
       ),
       floatingLabelBehavior: FloatingLabelBehavior.always,
       floatingLabelAlignment: FloatingLabelAlignment.start,
+      labelStyle: TextStyle(color: ThemeColors.surface),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: ThemeColors.surface, width: 1),
         borderRadius: BorderRadius.zero,
         gapPadding: 4,
       ),
       contentPadding: EdgeInsets.symmetric(horizontal: 12),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        textStyle: const TextStyle(
+          color: ThemeColors.background,
+          fontWeight: FontWeight.w500,
+        ),
+        foregroundColor: ThemeColors.background,
+        disabledForegroundColor: ThemeColors.background,
+      ),
     ),
   );
 
