@@ -3,7 +3,7 @@ description: Repositório que irá cuidar da parte de autenticação do flutter
 publish_to: none
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: '>=3.2.3 <4.0.0'
 
 dependencies:
   dio: ^5.4.3+1
