@@ -1,0 +1,9 @@
+name: storage_repository
+description: Repositório que irá cuidar da parte de armazenamento
+publish_to: none
+
+environment:
+  sdk: '>=3.2.3 <4.0.0'
+
+dependencies:
+  flutter_secure_storage: ^9.2.2
