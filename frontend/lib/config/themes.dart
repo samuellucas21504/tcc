@@ -29,15 +29,21 @@ class Themes {
     scaffoldBackgroundColor: ThemeColors.background,
     primaryColorDark: ThemeColors.primary,
     primaryColorLight: ThemeColors.primary,
+    primaryIconTheme: const IconThemeData(color: ThemeColors.onBackground),
     shadowColor: Colors.transparent,
-    drawerTheme: const DrawerThemeData(
-      backgroundColor: ThemeColors.surface,
+    drawerTheme: DrawerThemeData(
+      backgroundColor: ThemeColors.background,
       shadowColor: Colors.transparent,
       elevation: 0,
+      scrimColor: Colors.black.withAlpha(135),
     ),
     canvasColor: ThemeColors.primary,
     cardColor: ThemeColors.primary,
     hintColor: ThemeColors.primary,
+    iconButtonTheme: const IconButtonThemeData(
+        style: ButtonStyle(
+            iconColor: MaterialStatePropertyAll(ThemeColors.onBackground))),
+    iconTheme: const IconThemeData(color: ThemeColors.onBackground),
     secondaryHeaderColor: ThemeColors.primary,
     primaryTextTheme: const TextTheme(
       displayLarge: TextStyle(color: ThemeColors.onPrimary),
