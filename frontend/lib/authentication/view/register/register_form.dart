@@ -3,14 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:tcc/authentication/bloc/register/register_bloc.dart';
 import 'package:tcc/authentication/models/email_confirmation.dart';
+import 'package:tcc/home/components/rectangular_round_button.dart';
 
 class RegisterForm extends StatelessWidget {
   const RegisterForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     return BlocListener<RegisterBloc, RegisterState>(
       listener: (context, state) {
         if (state.status.isFailure) {
@@ -22,32 +21,18 @@ class RegisterForm extends StatelessWidget {
         }
       },
       child: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            _UsernameInput(),
-            const Padding(padding: EdgeInsets.all(10)),
-            _EmailInput(),
-            const Padding(padding: EdgeInsets.all(12)),
-            _EmailConfirmationInput(),
-            const Padding(padding: EdgeInsets.all(12)),
-            _PasswordInput(),
-            const Padding(padding: EdgeInsets.all(12)),
-            _LoginButton(),
-            const Padding(padding: EdgeInsets.all(25)),
-            const Divider(),
-            const Padding(padding: EdgeInsets.all(25)),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Já é cadastrado?',
-                style: TextStyle(
-                  color: colorScheme.surface,
-                ),
-              ),
-            ),
-          ]),
-        ),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          _UsernameInput(),
+          const Padding(padding: EdgeInsets.all(10)),
+          _EmailInput(),
+          const Padding(padding: EdgeInsets.all(12)),
+          _EmailConfirmationInput(),
+          const Padding(padding: EdgeInsets.all(12)),
+          _PasswordInput(),
+          const Padding(padding: EdgeInsets.all(12)),
+          _LoginButton(),
+          const Padding(padding: EdgeInsets.all(15)),
+        ]),
       ),
     );
   }
@@ -61,8 +46,9 @@ class _UsernameInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_usernameInput_textField'),
-          onChanged: (username) =>
-              context.read<RegisterBloc>().add(LoginUsernameChanged(username)),
+          onChanged: (username) => context
+              .read<RegisterBloc>()
+              .add(RegisterUsernameChanged(username)),
           decoration: InputDecoration(
             labelText: 'Usuário',
             errorText:
@@ -152,18 +138,14 @@ class _LoginButton extends StatelessWidget {
         return Row(
           children: [
             Expanded(
-              child: ElevatedButton(
-                key: const Key('loginForm_continue_raisedButton'),
-                onPressed: state.isValid
-                    ? () => context
-                        .read<RegisterBloc>()
-                        .add(const RegisterSubmitted())
-                    : null,
-                child: state.status.isInProgress
-                    ? const CircularProgressIndicator()
-                    : const Text('Registre-se'),
-              ),
-            ),
+                child: RectangularRoundButton(
+              key: key,
+              onPressed: () =>
+                  context.read<RegisterBloc>().add(const RegisterSubmitted()),
+              isInProgess: state.status.isInProgress,
+              isValid: state.isValid,
+              child: const Text('Registre-se'),
+            )),
           ],
         );
       },

@@ -15,7 +15,7 @@ class Themes {
       brightness: Brightness.dark,
       primary: ThemeColors.primary,
       onPrimary: ThemeColors.onPrimary,
-      secondary: ThemeColors.surface,
+      secondary: ThemeColors.onBackground,
       onSecondary: ThemeColors.onPrimary,
       error: ThemeColors.error,
       onError: ThemeColors.onPrimary,
@@ -29,7 +29,7 @@ class Themes {
     scaffoldBackgroundColor: ThemeColors.background,
     primaryColorDark: ThemeColors.primary,
     primaryColorLight: ThemeColors.primary,
-    primaryIconTheme: const IconThemeData(color: ThemeColors.onBackground),
+    primaryIconTheme: const IconThemeData(color: ThemeColors.surface),
     shadowColor: Colors.transparent,
     drawerTheme: DrawerThemeData(
       backgroundColor: ThemeColors.background,
@@ -42,8 +42,8 @@ class Themes {
     hintColor: ThemeColors.primary,
     iconButtonTheme: const IconButtonThemeData(
         style: ButtonStyle(
-            iconColor: MaterialStatePropertyAll(ThemeColors.onBackground))),
-    iconTheme: const IconThemeData(color: ThemeColors.onBackground),
+            iconColor: MaterialStatePropertyAll(ThemeColors.surface))),
+    iconTheme: const IconThemeData(color: ThemeColors.surface),
     secondaryHeaderColor: ThemeColors.primary,
     primaryTextTheme: const TextTheme(
       displayLarge: TextStyle(color: ThemeColors.onPrimary),
@@ -52,33 +52,39 @@ class Themes {
     ),
     buttonTheme: const ButtonThemeData(
       textTheme: ButtonTextTheme.normal,
-      buttonColor: ThemeColors.surface,
+      buttonColor: ThemeColors.onBackground,
     ),
     dividerTheme: const DividerThemeData(thickness: 0.5),
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(
-        borderSide: BorderSide(color: ThemeColors.surface, width: 1),
+        borderSide: BorderSide(color: ThemeColors.onBackground, width: 1),
         borderRadius: BorderRadius.zero,
         gapPadding: 4,
       ),
       hintStyle: TextStyle(
-        color: ThemeColors.surface,
+        color: ThemeColors.onBackground,
       ),
       floatingLabelBehavior: FloatingLabelBehavior.always,
       floatingLabelAlignment: FloatingLabelAlignment.start,
-      labelStyle: TextStyle(color: ThemeColors.surface),
+      labelStyle: TextStyle(color: ThemeColors.onBackground),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: ThemeColors.surface, width: 1),
+        borderSide: BorderSide(color: ThemeColors.onBackground, width: 1),
         borderRadius: BorderRadius.zero,
         gapPadding: 4,
       ),
       contentPadding: EdgeInsets.symmetric(horizontal: 12),
+    ),
+    textTheme: const TextTheme(
+      bodyMedium: TextStyle(
+        color: ThemeColors.onBackground,
+      ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
+        backgroundColor: ThemeColors.onBackground,
         textStyle: const TextStyle(
           color: ThemeColors.background,
           fontWeight: FontWeight.w500,

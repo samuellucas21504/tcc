@@ -14,7 +14,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   RegisterBloc({required AuthenticationRepository authenticationRepository})
       : _authenticationRepository = authenticationRepository,
         super(const RegisterState()) {
-    on<LoginUsernameChanged>(_onUsernameChanged);
+    on<RegisterUsernameChanged>(_onUsernameChanged);
     on<RegisterPasswordChanged>(_onPasswordChanged);
     on<RegisterEmailChanged>(_onEmailChanged);
     on<RegisterEmailConfirmationChanged>(_onEmailConfirmationChanged);
@@ -24,7 +24,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final AuthenticationRepository _authenticationRepository;
 
   void _onUsernameChanged(
-    LoginUsernameChanged event,
+    RegisterUsernameChanged event,
     Emitter<RegisterState> emit,
   ) {
     final username = Username.dirty(event.username);

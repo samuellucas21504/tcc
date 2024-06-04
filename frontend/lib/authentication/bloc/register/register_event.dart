@@ -7,8 +7,8 @@ sealed class RegisterEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class LoginUsernameChanged extends RegisterEvent {
-  const LoginUsernameChanged(this.username);
+final class RegisterUsernameChanged extends RegisterEvent {
+  const RegisterUsernameChanged(this.username);
 
   final String username;
 

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:authentication_repository/src/config/constants.dart';
+import 'package:authentication_repository/src/models/login/login_request_dto.dart';
 import 'package:authentication_repository/src/models/register/request_register_dto.dart';
 import 'package:dio/dio.dart';
 import 'package:user_repository/user_repository.dart';
@@ -33,9 +34,7 @@ class AuthenticationRepository {
     final body =
         RequestRegisterDTO(name: name, email: email, password: password);
 
-    Response response;
-
-    response =
+    Response response =
         await _dio.post('${Constants.url}/auth/register', data: body.toJson());
 
     final data = response.data;
@@ -50,13 +49,22 @@ class AuthenticationRepository {
   }
 
   Future<void> logIn({
-    required String username,
+    required String email,
     required String password,
   }) async {
-    await Future.delayed(
-      const Duration(milliseconds: 300),
-      () => _controller.add(AuthenticationStatus.authenticated),
-    );
+    final body = LoginRequestDTO(email: email, password: password);
+
+    Response response =
+        await _dio.post('${Constants.url}/auth/login', data: body.toJson());
+
+    final data = response.data;
+
+    final dto =
+        User(name: data['name'], email: data['email'], token: data['token']);
+
+    await _userRepository.changeUser(dto);
+
+    _controller.add(AuthenticationStatus.authenticated);
   }
 
   void logOut() {
