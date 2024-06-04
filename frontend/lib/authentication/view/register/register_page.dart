@@ -27,7 +27,8 @@ class RegisterPage extends StatelessWidget {
                 );
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 24),
                 child: Column(
                   children: [
                     const RegisterForm(),

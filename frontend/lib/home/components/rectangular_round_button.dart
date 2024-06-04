@@ -21,9 +21,12 @@ class RectangularRoundButton extends StatelessWidget {
       key: const Key('loginForm_continue_raisedButton'),
       onPressed: isValid ? onPressed : null,
       child: isInProgess
-          ? const Padding(
-              padding: EdgeInsets.all(8),
-              child: CircularProgressIndicator(),
+          ? const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
             )
           : child,
     );

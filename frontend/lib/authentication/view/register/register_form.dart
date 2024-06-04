@@ -30,7 +30,7 @@ class RegisterForm extends StatelessWidget {
           const Padding(padding: EdgeInsets.all(12)),
           _PasswordInput(),
           const Padding(padding: EdgeInsets.all(12)),
-          _LoginButton(),
+          _RegisterButton(),
           const Padding(padding: EdgeInsets.all(15)),
         ]),
       ),
@@ -130,7 +130,7 @@ class _PasswordInput extends StatelessWidget {
   }
 }
 
-class _LoginButton extends StatelessWidget {
+class _RegisterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RegisterBloc, RegisterState>(
