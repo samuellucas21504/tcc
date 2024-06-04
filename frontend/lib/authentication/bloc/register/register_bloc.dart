@@ -15,10 +15,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       : _authenticationRepository = authenticationRepository,
         super(const RegisterState()) {
     on<LoginUsernameChanged>(_onUsernameChanged);
-    on<LoginPasswordChanged>(_onPasswordChanged);
-    on<LoginEmailChanged>(_onEmailChanged);
-    on<LoginEmailConfirmationChanged>(_onEmailConfirmationChanged);
-    on<LoginSubmitted>(_onSubmitted);
+    on<RegisterPasswordChanged>(_onPasswordChanged);
+    on<RegisterEmailChanged>(_onEmailChanged);
+    on<RegisterEmailConfirmationChanged>(_onEmailConfirmationChanged);
+    on<RegisterSubmitted>(_onSubmitted);
   }
 
   final AuthenticationRepository _authenticationRepository;
@@ -40,7 +40,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   void _onPasswordChanged(
-    LoginPasswordChanged event,
+    RegisterPasswordChanged event,
     Emitter<RegisterState> emit,
   ) {
     final password = Password.dirty(event.password);
@@ -57,7 +57,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   void _onEmailChanged(
-    LoginEmailChanged event,
+    RegisterEmailChanged event,
     Emitter<RegisterState> emit,
   ) {
     final email = Email.dirty(event.email);
@@ -77,7 +77,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   void _onEmailConfirmationChanged(
-    LoginEmailConfirmationChanged event,
+    RegisterEmailConfirmationChanged event,
     Emitter<RegisterState> emit,
   ) {
     final emailConfirmation = EmailConfirmation.dirty(
@@ -95,7 +95,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   Future<void> _onSubmitted(
-    LoginSubmitted event,
+    RegisterSubmitted event,
     Emitter<RegisterState> emit,
   ) async {
     if (state.isValid) {

@@ -83,7 +83,7 @@ class _EmailInput extends StatelessWidget {
         return TextField(
           key: const Key('loginForm_emailInput_textfield'),
           onChanged: (email) =>
-              context.read<RegisterBloc>().add(LoginEmailChanged(email)),
+              context.read<RegisterBloc>().add(RegisterEmailChanged(email)),
           decoration: InputDecoration(
             labelText: 'Email',
             errorText:
@@ -106,7 +106,7 @@ class _EmailConfirmationInput extends StatelessWidget {
           key: const Key('loginForm_emailConfirmationInput_textfield'),
           onChanged: (emailConfirmation) => context
               .read<RegisterBloc>()
-              .add(LoginEmailConfirmationChanged(emailConfirmation)),
+              .add(RegisterEmailConfirmationChanged(emailConfirmation)),
           decoration: InputDecoration(
             labelText: 'Confirmação do Email',
             errorText: state.emailConfirmation.displayError != null
@@ -129,8 +129,9 @@ class _PasswordInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_passwordInput_textfield'),
-          onChanged: (password) =>
-              context.read<RegisterBloc>().add(LoginPasswordChanged(password)),
+          onChanged: (password) => context
+              .read<RegisterBloc>()
+              .add(RegisterPasswordChanged(password)),
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'Senha',
@@ -154,8 +155,9 @@ class _LoginButton extends StatelessWidget {
               child: ElevatedButton(
                 key: const Key('loginForm_continue_raisedButton'),
                 onPressed: state.isValid
-                    ? () =>
-                        context.read<RegisterBloc>().add(const LoginSubmitted())
+                    ? () => context
+                        .read<RegisterBloc>()
+                        .add(const RegisterSubmitted())
                     : null,
                 child: state.status.isInProgress
                     ? const CircularProgressIndicator()

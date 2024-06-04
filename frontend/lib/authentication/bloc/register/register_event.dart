@@ -16,8 +16,8 @@ final class LoginUsernameChanged extends RegisterEvent {
   List<Object> get props => [username];
 }
 
-final class LoginPasswordChanged extends RegisterEvent {
-  const LoginPasswordChanged(this.password);
+final class RegisterPasswordChanged extends RegisterEvent {
+  const RegisterPasswordChanged(this.password);
 
   final String password;
 
@@ -25,20 +25,20 @@ final class LoginPasswordChanged extends RegisterEvent {
   List<Object> get props => [password];
 }
 
-final class LoginSubmitted extends RegisterEvent {
-  const LoginSubmitted();
+final class RegisterSubmitted extends RegisterEvent {
+  const RegisterSubmitted();
 }
 
-final class LoginEmailChanged extends RegisterEvent {
-  const LoginEmailChanged(this.email);
+final class RegisterEmailChanged extends RegisterEvent {
+  const RegisterEmailChanged(this.email);
 
   final String email;
   @override
   List<Object> get props => [email];
 }
 
-final class LoginEmailConfirmationChanged extends RegisterEvent {
-  const LoginEmailConfirmationChanged(this.emailConfirmation);
+final class RegisterEmailConfirmationChanged extends RegisterEvent {
+  const RegisterEmailConfirmationChanged(this.emailConfirmation);
 
   final String emailConfirmation;
   @override
