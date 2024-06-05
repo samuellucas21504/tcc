@@ -1,13 +1,12 @@
 package com.samuel.tcc.authapi.infra.security;
 
-import com.samuel.tcc.authapi.domain.user.User;
+import com.samuel.tcc.authapi.entities.user.User;
 import com.samuel.tcc.authapi.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;

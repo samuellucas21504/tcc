@@ -4,9 +4,11 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.samuel.tcc.authapi.domain.user.User;
+import com.samuel.tcc.authapi.entities.user.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -32,6 +34,10 @@ public class TokenService {
         catch (JWTCreationException exception) {
             throw new RuntimeException("Error while authenticating");
         }
+    }
+
+    public String validateBearerToken(String token) {
+        return validateToken(token.replace("Bearer ", ""));
     }
 
     public String validateToken(String token) {
