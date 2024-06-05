@@ -7,10 +7,13 @@ import com.samuel.tcc.authapi.entities.user.User;
 import com.samuel.tcc.authapi.infra.mappers.FriendRequestMapper;
 import com.samuel.tcc.authapi.repositories.FriendRequestRepository;
 import com.samuel.tcc.authapi.repositories.UserRepository;
+import com.samuel.tcc.authapi.services.exceptions.FriendRequestNotFoundException;
+import com.samuel.tcc.authapi.services.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,8 +46,8 @@ public class UserService {
     }
 
     public void sendFriendRequest(String requesterEmail,String friendEmail) {
-        User requester = getUserByEmail(requesterEmail).orElseThrow(() -> new RuntimeException("a"));
-        User friend = getUserByEmail(friendEmail).orElseThrow(() -> new RuntimeException("a"));
+        User requester = getUserByEmail(requesterEmail).orElseThrow(UserNotFoundException::new);
+        User friend = getUserByEmail(friendEmail).orElseThrow(UserNotFoundException::new);
 
         FriendRequest friendRequest = new FriendRequest();
         friendRequest.setActive(true);
@@ -56,6 +59,23 @@ public class UserService {
         friend.getFriendRequests().add(friendRequest);
 
         _repository.save(friend);
+    }
+
+    public void acceptFriendRequest(String requesterEmail, String userEmail) {
+        var friendRequest = _friendRequestRepository
+                .findFriendRequestByUserAndRequesterEmail(requesterEmail, userEmail).orElseThrow(FriendRequestNotFoundException::new);
+
+        friendRequest.setActive(false);
+        _friendRequestRepository.save(friendRequest);
+
+        User requester = getUserByEmail(requesterEmail).orElseThrow(UserNotFoundException::new);
+        User friend = getUserByEmail(requesterEmail).orElseThrow(UserNotFoundException::new);
+
+        friend.getFriends().add(requester);
+        requester.getFriends().add(requester);
+
+        _repository.save(friend);
+        _repository.save(requester);
     }
 
     public List<User> getFriendsByEmail(String name) {
