@@ -26,6 +26,7 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private boolean habitRegistered;
 
     @CreationTimestamp
     @Temporal(TemporalType.DATE)
@@ -38,4 +39,5 @@ public class User {
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER)
     private List<User> friends = new ArrayList<>();
+
 }

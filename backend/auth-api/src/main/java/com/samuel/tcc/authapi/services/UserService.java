@@ -27,6 +27,7 @@ public class UserService {
         user.setPassword(_passwordEncoder.encode(dto.password()));
         user.setEmail(dto.email());
         user.setName(dto.name());
+        user.setHabitRegistered(false);
 
         _repository.save(user);
 

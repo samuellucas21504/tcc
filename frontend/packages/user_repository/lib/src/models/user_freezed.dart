@@ -10,6 +10,7 @@ class User with _$User {
   const factory User({
     required String name,
     String? email,
+    bool? habitRegistered,
     String? token,
   }) = _User;
 

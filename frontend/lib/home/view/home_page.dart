@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const SizedBox(height: 6),
                     InteractiveButton(
-                      onPressed: () => print(user.token),
+                      onPressed: () => print(user!.token),
                       text: 'Marcar dia feito',
                     ),
                     const Padding(

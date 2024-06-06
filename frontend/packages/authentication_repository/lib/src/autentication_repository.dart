@@ -37,11 +37,13 @@ class AuthenticationRepository {
         await _dio.post('${Constants.url}/auth/register', data: body.toJson());
 
     final data = response.data;
+    print(data['habit_registered']);
     final headers = response.headers;
 
     final dto = User(
       name: data['name'],
       email: data['email'],
+      habitRegistered: data['habit_registered'],
       token: headers['token']!.first,
     );
 
@@ -65,6 +67,7 @@ class AuthenticationRepository {
     final dto = User(
       name: data['name'],
       email: data['email'],
+      habitRegistered: data['habit_registered'],
       token: headers['token']!.first,
     );
 

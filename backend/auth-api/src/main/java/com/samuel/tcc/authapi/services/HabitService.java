@@ -8,6 +8,7 @@ import com.samuel.tcc.authapi.infra.gateways.MotivationMessagesClient;
 import com.samuel.tcc.authapi.infra.mappers.HabitMapper;
 import com.samuel.tcc.authapi.repositories.HabitRecordRepository;
 import com.samuel.tcc.authapi.repositories.HabitRepository;
+import com.samuel.tcc.authapi.repositories.UserRepository;
 import com.samuel.tcc.authapi.services.exceptions.HabitNotFoundException;
 import com.samuel.tcc.authapi.services.exceptions.UserHasHabitRegisteredException;
 import com.samuel.tcc.authapi.services.exceptions.UserNotFoundException;
@@ -24,6 +25,7 @@ public class HabitService {
     private final HabitRepository _repository;
     private final HabitRecordRepository _recordRepository;
     private final UserService _userService;
+    private final UserRepository _userRepository;
     private final HabitMapper _mapper;
     private final MotivationMessagesClient _client;
 
@@ -31,10 +33,9 @@ public class HabitService {
     @Transactional
     public HabitDTO registerHabit(String userEmail, String reason) {
         var user = _userService.getUserByEmail(userEmail).orElseThrow(UserNotFoundException::new);
+        if(user.isHabitRegistered()) throw new UserHasHabitRegisteredException();
 
-        var optHabit = _repository.findById(user.getId());
-        if(optHabit.isPresent()) throw new UserHasHabitRegisteredException();
-
+        user.setHabitRegistered(true);
 
         Habit habit = new Habit();
         habit.setReason(reason);
@@ -44,6 +45,7 @@ public class HabitService {
         habit.setMotivation(responseDto.motivation());
 
         _repository.save(habit);
+        _userRepository.save(user);
 
         return _mapper.entityToDTO(habit);
     }
