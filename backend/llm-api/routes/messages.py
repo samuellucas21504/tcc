@@ -1,13 +1,14 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Body
 from services.messages_service import MessagesService
+from dtos.habit_dto import HabitDTO
 
 router = APIRouter()
 service = MessagesService()
 
 
-@router.get("/")
-async def root():
-    return {"message": "Hello World"}
+@router.post("/")
+async def root(motivation_request: HabitDTO):
+    return service.generate_motivation_message(motivation_request)
 
 
 @router.get("/hello/{name}")

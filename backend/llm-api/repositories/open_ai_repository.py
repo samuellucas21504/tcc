@@ -12,14 +12,18 @@ class OpenAiRepository:
     def __del__(self):
         self.client.close()
 
-    def test_message(self):
+    def generate_motivation_message(self, mensagem_usuario):
         model = os.getenv("OPENAI_MODEL")
 
         completion = self.client.chat.completions.create(
             messages=[
                 {"role": "system",
-                 "content": "You are a poetic assistant, skilled in explaining complex programming concepts with creative flair."},
-                {"role": "user", "content": "Compose a poem that explains the concept of recursion in programming."}
+                 "content": "Você a partir de agora um robô que tem como objetivo gerar mensagens para manter uma "
+                            "pessoa motivada a partir de um tema. Imagine que a pessoa não consiga atualmente fazer o "
+                            "que está descrito no tema e o objetivo é o tema. Gere uma frase de no máximo 240 "
+                            "caracteres e 20 tokens, que seja coerente. Além disso traga fatos científicos sobre os "
+                            "benefícios e que não soe ridícula ou desnecessariamente motivadora."},
+                {"role": "user", "content": mensagem_usuario}
             ],
             model=model,
             temperature=0.7,
