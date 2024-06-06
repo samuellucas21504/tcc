@@ -37,10 +37,13 @@ class AuthenticationRepository {
         await _dio.post('${Constants.url}/auth/register', data: body.toJson());
 
     final data = response.data;
+    final headers = response.headers;
 
-    // TODO - VERIFY
-    final dto =
-        User(name: data['name'], email: data['email'], token: data['token']);
+    final dto = User(
+      name: data['name'],
+      email: data['email'],
+      token: headers['token']!.first,
+    );
 
     await _userRepository.changeUser(dto);
 
@@ -57,9 +60,13 @@ class AuthenticationRepository {
         await _dio.post('${Constants.url}/auth/login', data: body.toJson());
 
     final data = response.data;
+    final headers = response.headers;
 
-    final dto =
-        User(name: data['name'], email: data['email'], token: data['token']);
+    final dto = User(
+      name: data['name'],
+      email: data['email'],
+      token: headers['token']!.first,
+    );
 
     await _userRepository.changeUser(dto);
 
