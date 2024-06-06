@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:authentication_repository/src/config/constants.dart';
 import 'package:authentication_repository/src/models/login/login_request_dto.dart';

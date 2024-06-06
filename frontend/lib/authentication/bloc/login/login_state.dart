@@ -1,6 +1,6 @@
 part of 'login_bloc.dart';
 
-class LoginState {
+class LoginState extends Equatable {
   const LoginState({
     this.status = FormzSubmissionStatus.initial,
     this.email = const Email.pure(),

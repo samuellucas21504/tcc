@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:tcc/authentication/bloc/login/login_bloc.dart';
-import 'package:tcc/authentication/bloc/register/register_bloc.dart';
 import 'package:tcc/home/components/rectangular_round_button.dart';
 
 class LoginForm extends StatelessWidget {
