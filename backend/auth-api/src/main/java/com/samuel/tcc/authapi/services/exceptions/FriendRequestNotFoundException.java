@@ -5,6 +5,6 @@ public class FriendRequestNotFoundException extends RuntimeException {
         super("O pedido de amizade não foi encontrado.");
     }
     public int getErrorCode() {
-        return 5;
+        return 3;
     }
 }

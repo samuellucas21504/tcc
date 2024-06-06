@@ -21,13 +21,13 @@ public class TokenService {
     @Value("${api.security.token.issuer}")
     private String issuer;
 
-    public String generateToken(User user) {
+    public String generateToken(String email) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
             return JWT.create()
                     .withIssuer(issuer)
-                    .withSubject(user.getEmail())
+                    .withSubject(email)
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
         }

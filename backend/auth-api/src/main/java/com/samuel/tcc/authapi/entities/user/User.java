@@ -31,11 +31,11 @@ public class User {
     @Temporal(TemporalType.DATE)
     private Date createdAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "requester", cascade = CascadeType.ALL)
     @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "requester", cascade = CascadeType.ALL)
     private Set<FriendRequest> friendRequests = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
     @JsonManagedReference
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<User> friends = new ArrayList<>();
 }

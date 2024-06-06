@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface FriendRequestRepository extends JpaRepository<FriendRequest, UUID> {
-    @Query("SELECT fr FROM FriendRequest fr WHERE fr.friend.email = :email")
+    @Query("SELECT fr FROM FriendRequest fr WHERE fr.friend.email = :email and fr.active = true")
     List<FriendRequest> findFriendRequestByEmail(@Param("email") String email);
 
     @Query("SELECT fr FROM FriendRequest fr WHERE fr.friend.email = :user_email and fr.requester.email = :requester_email")
