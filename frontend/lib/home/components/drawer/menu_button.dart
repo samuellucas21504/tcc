@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 
 class MenuButton extends StatelessWidget {
-  final VoidCallback onPressed;
-
-  const MenuButton({super.key, required this.onPressed});
+  const MenuButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: onPressed,
+      onPressed: Scaffold.of(context).openDrawer,
       icon: const Icon(Icons.menu),
     );
   }

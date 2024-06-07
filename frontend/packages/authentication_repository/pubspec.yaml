@@ -9,3 +9,5 @@ dependencies:
   dio: ^5.4.3+1
   user_repository:
     path: ../user_repository/
+  storage_repository:
+    path: ../storage_repository/

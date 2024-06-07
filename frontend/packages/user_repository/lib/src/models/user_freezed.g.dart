@@ -8,8 +8,8 @@ part of 'user_freezed.dart';
 
 _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       name: json['name'] as String,
-      email: json['email'] as String?,
-      habitRegistered: json['habitRegistered'] as bool?,
+      email: json['email'] as String,
+      habitRegistered: json['habitRegistered'] as bool,
       token: json['token'] as String?,
     );
 

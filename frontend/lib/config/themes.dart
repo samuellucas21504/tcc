@@ -62,8 +62,7 @@ class Themes {
         gapPadding: 4,
       ),
       hintStyle: TextStyle(
-        color: ThemeColors.onBackground,
-      ),
+          color: ThemeColors.onBackground, fontWeight: FontWeight.w400),
       floatingLabelBehavior: FloatingLabelBehavior.always,
       floatingLabelAlignment: FloatingLabelAlignment.start,
       labelStyle: TextStyle(color: ThemeColors.onBackground),

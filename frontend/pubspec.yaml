@@ -49,6 +49,8 @@ dependencies:
     path: packages/authentication_repository
   storage_repository:
     path: packages/storage_repository
+  habit_repository:
+    path: packages/habit_repository
 
 dev_dependencies:
   flutter_test:

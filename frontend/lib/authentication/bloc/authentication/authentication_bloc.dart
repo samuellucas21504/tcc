@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:habit_repository/habit_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
 part 'authentication_event.dart';
@@ -13,8 +14,10 @@ class AuthenticationBloc
   AuthenticationBloc({
     required AuthenticationRepository authenticationRepository,
     required UserRepository userRepository,
+    required HabitRepository habitRepository,
   })  : _authenticationRepository = authenticationRepository,
         _userRepository = userRepository,
+        _habitRepository = habitRepository,
         super(const AuthenticationState.unknown()) {
     on<_AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
     on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
@@ -24,6 +27,7 @@ class AuthenticationBloc
 
   final AuthenticationRepository _authenticationRepository;
   final UserRepository _userRepository;
+  final HabitRepository _habitRepository;
   late StreamSubscription<AuthenticationStatus>
       _authenticationStatusSubscription;
 
@@ -57,6 +61,7 @@ class AuthenticationBloc
     Emitter<AuthenticationState> emit,
   ) {
     _authenticationRepository.logOut();
+    _userRepository.logout();
   }
 
   Future<User?> _tryGetUser() async {
