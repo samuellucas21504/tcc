@@ -7,7 +7,11 @@ import 'package:dio/dio.dart';
 import 'package:storage_repository/storage_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
-enum AuthenticationStatus { unknown, unauthenticated, authenticated }
+enum AuthenticationStatus {
+  unknown,
+  unauthenticated,
+  authenticated,
+}
 
 class AuthenticationRepository {
   static const String tokenKey = 'token_key';
@@ -61,7 +65,6 @@ class AuthenticationRepository {
         await _dio.post('${Constants.url}/auth/register', data: body.toJson());
 
     final data = response.data;
-    print(data['habit_registered']);
     final headers = response.headers;
 
     final dto = User(
@@ -72,6 +75,7 @@ class AuthenticationRepository {
     _saveToken(headers['token']!.first);
 
     await _userRepository.changeUser(dto);
+    _controller.add(AuthenticationStatus.authenticated);
   }
 
   Future<void> logIn({
@@ -95,6 +99,10 @@ class AuthenticationRepository {
 
     await _userRepository.changeUser(dto);
 
+    _controller.add(AuthenticationStatus.authenticated);
+  }
+
+  void userAddedHabit() {
     _controller.add(AuthenticationStatus.authenticated);
   }
 

@@ -22,12 +22,9 @@ public class HabitController {
     private final HabitService _habitService;
 
     @GetMapping
-    public ResponseEntity<List<HabitRecordDTO>> getRecordsByMonth(
-            @RequestHeader("Authorization") String bearerToken,
-            @RequestBody HabitRecordRequestDTO dto
-    ) {
+    public ResponseEntity<HabitDTO> get(@RequestHeader("Authorization") String bearerToken) {
         var userEmail = _tokenService.validateBearerToken(bearerToken);
-        return ResponseEntity.ok(_habitService.getHabitRecords(userEmail, dto.month(), dto.year()));
+        return ResponseEntity.ok(_habitService.getHabit(userEmail));
     }
 
     @PostMapping
@@ -37,6 +34,15 @@ public class HabitController {
     ) {
         var userEmail = _tokenService.validateBearerToken(bearerToken);
         return ResponseEntity.ok(_habitService.registerHabit(userEmail, dto.reason()));
+    }
+
+    @GetMapping("/record")
+    public ResponseEntity<List<HabitRecordDTO>> getRecordsByMonth(
+            @RequestHeader("Authorization") String bearerToken,
+            @RequestBody HabitRecordRequestDTO dto
+    ) {
+        var userEmail = _tokenService.validateBearerToken(bearerToken);
+        return ResponseEntity.ok(_habitService.getHabitRecords(userEmail, dto.month(), dto.year()));
     }
 
     @PostMapping("/record")

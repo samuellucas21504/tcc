@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:habit_repository/habit_repository.dart';
+import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
 import 'package:tcc/habit/bloc/reason/reason_bloc.dart';
 import 'package:tcc/home/components/rectangular_round_button.dart';
 import 'package:tcc/home/view/home_page.dart';

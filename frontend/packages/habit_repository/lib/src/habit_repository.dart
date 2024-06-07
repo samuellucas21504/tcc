@@ -18,23 +18,16 @@ class HabitRepository {
   Future<void> register({required String objective}) async {
     final _dio = Dio();
     final bearerToken = await _authenticationRepository.getBearerToken();
-    print(bearerToken);
-
     _dio.options.headers["Authorization"] = bearerToken;
-
     final body = Habit(reason: objective);
 
     Response response =
         await _dio.post('${Constants.url}/habits', data: body.toJson());
 
-    print(response.statusCode);
-
-    final user = await _userRepository.getUser();
-
-    final data = response.data;
-    print(data);
-
     try {
+      final user = await _userRepository.getUser();
+      final data = response.data;
+
       final habit = Habit(
         reason: data['reason'],
         motivation: data['motivation'],
@@ -42,9 +35,27 @@ class HabitRepository {
 
       _saveHabit(habit);
       _userRepository.changeUser(user!.copyWith(habitRegistered: true));
+      _authenticationRepository.userAddedHabit();
     } catch (e) {
       print(e);
     }
+  }
+
+  void fetchHabit() async {
+    final _dio = Dio();
+    final bearerToken = await _authenticationRepository.getBearerToken();
+    print(bearerToken);
+    print('entrou');
+    _dio.options.headers["Authorization"] = bearerToken;
+
+    Response response = await _dio.get('${Constants.url}/habits');
+    final data = response.data;
+
+    final habit = Habit(
+      reason: data['reason'],
+      motivation: data['motivation'],
+    );
+    _saveHabit(habit);
   }
 
   Future<Habit?> getHabit() async {

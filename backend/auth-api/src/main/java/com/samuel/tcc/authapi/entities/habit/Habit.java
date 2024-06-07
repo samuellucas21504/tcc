@@ -24,10 +24,10 @@ public class Habit {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String reason;
 
-    @Column
+    @Column(columnDefinition = "LONGTEXT")
     private String motivation;
 
     @ManyToOne

@@ -73,14 +73,11 @@ class _AppViewState extends State<AppView> {
       navigatorKey: _navigatorKey,
       theme: Themes.main,
       builder: (context, child) {
-        final user =
-            context.select((AuthenticationBloc bloc) => bloc.state.user);
-
         return BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (context, state) {
             switch (state.status) {
               case AuthenticationStatus.authenticated:
-                if (user.habitRegistered) {
+                if (state.user.habitRegistered) {
                   _navigator.pushAndRemoveUntil(
                     HomePage.route(),
                     (route) => false,

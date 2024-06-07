@@ -1,6 +1,7 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:habit_repository/habit_repository.dart';
 import 'package:tcc/authentication/bloc/login/login_bloc.dart';
 import 'package:tcc/authentication/view/login/login_form.dart';
 
@@ -20,8 +21,11 @@ class LoginPage extends StatelessWidget {
           child: BlocProvider(
             create: (context) {
               return LoginBloc(
-                  authenticationRepository:
-                      RepositoryProvider.of<AuthenticationRepository>(context));
+                authenticationRepository:
+                    RepositoryProvider.of<AuthenticationRepository>(context),
+                habitRepository:
+                    RepositoryProvider.of<HabitRepository>(context),
+              );
             },
             child: const Padding(
               padding: EdgeInsets.symmetric(horizontal: 50, vertical: 24),

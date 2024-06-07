@@ -2,6 +2,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:habit_repository/habit_repository.dart';
 import 'package:tcc/authentication/models/email.dart';
 import 'package:tcc/authentication/models/password.dart';
 
@@ -9,8 +10,11 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc({required AuthenticationRepository authenticationRepository})
-      : _authenticationRepository = authenticationRepository,
+  LoginBloc({
+    required AuthenticationRepository authenticationRepository,
+    required HabitRepository habitRepository,
+  })  : _authenticationRepository = authenticationRepository,
+        _habitRepository = habitRepository,
         super(const LoginState()) {
     on<LoginEmailChanged>(_onEmailChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
@@ -18,6 +22,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   final AuthenticationRepository _authenticationRepository;
+  final HabitRepository _habitRepository;
 
   void _onEmailChanged(LoginEmailChanged event, Emitter<LoginState> emit) {
     final email = Email.dirty(event.email);
@@ -45,6 +50,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         await _authenticationRepository.logIn(
             email: state.email.value, password: state.password.value);
+
+        _habitRepository.fetchHabit();
 
         emit(state.copyWith(status: FormzSubmissionStatus.success));
       } catch (_) {

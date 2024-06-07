@@ -19,6 +19,7 @@ class UserRepository {
   Future<void> changeUser(User user) async {
     await _storageRepository.write(User.key, jsonEncode(user.toJson()));
     _user = user;
+    print(user);
   }
 
   Future logout() async {

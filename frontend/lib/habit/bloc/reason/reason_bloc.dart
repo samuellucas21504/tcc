@@ -44,9 +44,7 @@ class ReasonBloc extends Bloc<ReasonEvent, ReasonState> {
           objective: state.reason.value,
         );
         emit(state.copyWith(status: FormzSubmissionStatus.success));
-        print('sucesso');
       } catch (_) {
-        print(_);
         emit(state.copyWith(status: FormzSubmissionStatus.failure));
       }
     }

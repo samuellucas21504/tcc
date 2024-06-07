@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:habit_repository/habit_repository.dart';
 import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
 import 'package:tcc/home/components/drawer/drawer.dart';
 import 'package:tcc/home/components/drawer/menu_button.dart';
@@ -8,12 +9,20 @@ import 'package:tcc/home/components/streak_calendar/streak_calendar.dart';
 import 'package:tcc/home/components/text_button.dart';
 import 'package:tcc/home/components/text_section.dart';
 import 'package:tcc/home/components/texts/title_text.dart';
+import 'package:tcc/home/cubit/habit_cubit.dart';
+import 'package:tcc/home/cubit/habit_state.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const HomePage());
+    return MaterialPageRoute<void>(builder: (_) {
+      return BlocProvider(
+        create: (context) => HabitCubit(
+            repository: RepositoryProvider.of<HabitRepository>(context)),
+        child: const HomePage(),
+      );
+    });
   }
 
   @override
@@ -21,6 +30,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<HabitCubit>(context).fetchHabit();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,17 +52,7 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const TextSection(
-                  title: 'A razão de sua motivação é:',
-                  description:
-                      'Ganhar músculos para carregar meu filho no colo.',
-                ),
-                const TextSection(
-                  title: 'Frase de hoje:',
-                  description:
-                      'Cada pequeno passo na academia é um investimento no seu futuro, naqueles momentos preciosos em que seu filho olhará para você com admiração e confiança, sabendo que sempre poderá contar com você para levantá-lo. Mantenha-se firme, cada músculo que você constrói é uma promessa de apoio e amor.',
-                ),
-                const SizedBox(height: 12),
+                _habitSection(context),
                 const TitleText(
                   'Voce ainda não marcou hoje como feito',
                   textAlign: TextAlign.center,
@@ -67,30 +72,30 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: IconButton(
-                        onPressed: () => print('1'),
-                        icon: const Icon(Icons.arrow_back_ios),
-                      ),
-                    ),
-                    const Expanded(
-                      flex: 6,
-                      child: StreakCalendar(),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: IconButton(
-                        onPressed: () => print('1'),
-                        icon: const Icon(Icons.arrow_forward_ios),
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   crossAxisAlignment: CrossAxisAlignment.center,
+                //   children: [
+                //     Expanded(
+                //       flex: 1,
+                //       child: IconButton(
+                //         onPressed: () => print('1'),
+                //         icon: const Icon(Icons.arrow_back_ios),
+                //       ),
+                //     ),
+                //     const Expanded(
+                //       flex: 6,
+                //       child: HabitRecordsCalendar(),
+                //     ),
+                //     Expanded(
+                //       flex: 1,
+                //       child: IconButton(
+                //         onPressed: () => print('1'),
+                //         icon: const Icon(Icons.arrow_forward_ios),
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 const SizedBox(
                   height: 125,
                 ),
@@ -100,5 +105,31 @@ class _HomePageState extends State<HomePage> {
         },
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  Widget _habitSection(BuildContext context) {
+    return BlocBuilder<HabitCubit, HabitState>(builder: (context, state) {
+      print(state.runtimeType);
+      if (state is HabitLoaded) {
+        final habit = state.habit;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextSection(
+              title: 'A razão de sua motivação é:',
+              description: "${habit.reason}.",
+            ),
+            TextSection(
+              title: 'Frase de hoje:',
+              description: habit.motivation!,
+            ),
+            const SizedBox(height: 12),
+          ],
+        );
+      }
+
+      return const SizedBox();
+    });
   }
 }

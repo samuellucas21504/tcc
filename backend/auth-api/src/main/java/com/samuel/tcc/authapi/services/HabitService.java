@@ -29,6 +29,11 @@ public class HabitService {
     private final HabitMapper _mapper;
     private final MotivationMessagesClient _client;
 
+    public HabitDTO getHabit(String userEmail) {
+        var habit = _repository.findByUserEmail(userEmail).orElseThrow(HabitNotFoundException::new);
+
+        return _mapper.entityToDTO(habit);
+    }
 
     @Transactional
     public HabitDTO registerHabit(String userEmail, String reason) {
