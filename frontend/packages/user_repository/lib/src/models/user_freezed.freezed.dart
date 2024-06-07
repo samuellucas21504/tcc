@@ -23,7 +23,7 @@ mixin _$User {
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   bool get habitRegistered => throw _privateConstructorUsedError;
-  String? get token => throw _privateConstructorUsedError;
+  DateTime? get registeredAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +35,11 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res, User>;
   @useResult
-  $Res call({String name, String email, bool habitRegistered, String? token});
+  $Res call(
+      {String name,
+      String email,
+      bool habitRegistered,
+      DateTime? registeredAt});
 }
 
 /// @nodoc
@@ -54,7 +58,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? name = null,
     Object? email = null,
     Object? habitRegistered = null,
-    Object? token = freezed,
+    Object? registeredAt = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -69,10 +73,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.habitRegistered
           : habitRegistered // ignore: cast_nullable_to_non_nullable
               as bool,
-      token: freezed == token
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
-              as String?,
+      registeredAt: freezed == registeredAt
+          ? _value.registeredAt
+          : registeredAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -84,7 +88,11 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       __$$UserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String email, bool habitRegistered, String? token});
+  $Res call(
+      {String name,
+      String email,
+      bool habitRegistered,
+      DateTime? registeredAt});
 }
 
 /// @nodoc
@@ -100,7 +108,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? name = null,
     Object? email = null,
     Object? habitRegistered = null,
-    Object? token = freezed,
+    Object? registeredAt = freezed,
   }) {
     return _then(_$UserImpl(
       name: null == name
@@ -115,10 +123,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.habitRegistered
           : habitRegistered // ignore: cast_nullable_to_non_nullable
               as bool,
-      token: freezed == token
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
-              as String?,
+      registeredAt: freezed == registeredAt
+          ? _value.registeredAt
+          : registeredAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -130,7 +138,7 @@ class _$UserImpl implements _User {
       {required this.name,
       required this.email,
       required this.habitRegistered,
-      this.token});
+      this.registeredAt});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -142,11 +150,11 @@ class _$UserImpl implements _User {
   @override
   final bool habitRegistered;
   @override
-  final String? token;
+  final DateTime? registeredAt;
 
   @override
   String toString() {
-    return 'User(name: $name, email: $email, habitRegistered: $habitRegistered, token: $token)';
+    return 'User(name: $name, email: $email, habitRegistered: $habitRegistered, registeredAt: $registeredAt)';
   }
 
   @override
@@ -158,13 +166,14 @@ class _$UserImpl implements _User {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.habitRegistered, habitRegistered) ||
                 other.habitRegistered == habitRegistered) &&
-            (identical(other.token, token) || other.token == token));
+            (identical(other.registeredAt, registeredAt) ||
+                other.registeredAt == registeredAt));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, name, email, habitRegistered, token);
+      Object.hash(runtimeType, name, email, habitRegistered, registeredAt);
 
   @JsonKey(ignore: true)
   @override
@@ -185,7 +194,7 @@ abstract class _User implements User {
       {required final String name,
       required final String email,
       required final bool habitRegistered,
-      final String? token}) = _$UserImpl;
+      final DateTime? registeredAt}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -196,7 +205,7 @@ abstract class _User implements User {
   @override
   bool get habitRegistered;
   @override
-  String? get token;
+  DateTime? get registeredAt;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

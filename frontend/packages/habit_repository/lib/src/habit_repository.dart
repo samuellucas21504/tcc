@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:dio/dio.dart';
+import 'package:habit_repository/habit_repository.dart';
 import 'package:habit_repository/src/config/constants.dart';
 import 'package:habit_repository/src/models/habit.dart';
 import 'package:storage_repository/storage_repository.dart';
@@ -56,6 +57,23 @@ class HabitRepository {
       motivation: data['motivation'],
     );
     _saveHabit(habit);
+  }
+
+  Future<List<HabitRecord>> fetchRecords(int month, int year) async {
+    final _dio = Dio();
+    final bearerToken = await _authenticationRepository.getBearerToken();
+    print(bearerToken);
+    _dio.options.headers["Authorization"] = bearerToken;
+
+    Response response = await _dio.get(
+      '${Constants.url}/habits/records',
+      data: {
+        'month': month,
+        'year': year,
+      },
+    );
+    final data = response.data;
+    return HabitRecord.fromMapList(data);
   }
 
   Future<Habit?> getHabit() async {

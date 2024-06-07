@@ -11,11 +11,16 @@ class User with _$User {
     required String name,
     required String email,
     required bool habitRegistered,
+    DateTime? registeredAt,
   }) = _User;
 
   factory User.fromJson(String source) =>
       _$UserFromJson(json.decode(source) as Map<String, dynamic>);
 
-  static const empty = User(name: '-', email: '-', habitRegistered: false);
+  static const empty = User(
+    name: '-',
+    email: '-',
+    habitRegistered: false,
+  );
   static const key = 'user_key';
 }

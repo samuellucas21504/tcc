@@ -10,7 +10,7 @@ import 'package:tcc/home/components/text_button.dart';
 import 'package:tcc/home/components/text_section.dart';
 import 'package:tcc/home/components/texts/title_text.dart';
 import 'package:tcc/home/cubit/habit_cubit.dart';
-import 'package:tcc/home/cubit/habit_state.dart';
+import 'package:tcc/home/cubit/habit_record_cubit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 6),
                 InteractiveButton(
-                  onPressed: () => print(user.token),
+                  onPressed: () => print('a'),
                   text: 'Marcar dia feito',
                 ),
                 const Padding(
@@ -72,30 +72,15 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 10,
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   crossAxisAlignment: CrossAxisAlignment.center,
-                //   children: [
-                //     Expanded(
-                //       flex: 1,
-                //       child: IconButton(
-                //         onPressed: () => print('1'),
-                //         icon: const Icon(Icons.arrow_back_ios),
-                //       ),
-                //     ),
-                //     const Expanded(
-                //       flex: 6,
-                //       child: HabitRecordsCalendar(),
-                //     ),
-                //     Expanded(
-                //       flex: 1,
-                //       child: IconButton(
-                //         onPressed: () => print('1'),
-                //         icon: const Icon(Icons.arrow_forward_ios),
-                //       ),
-                //     ),
-                //   ],
-                // ),
+                BlocProvider(
+                  create: (context) {
+                    return HabitRecordCubit(
+                      repository:
+                          RepositoryProvider.of<HabitRepository>(context),
+                    );
+                  },
+                  child: const HabitRecordsCalendar(),
+                ),
                 const SizedBox(
                   height: 125,
                 ),
@@ -109,7 +94,6 @@ class _HomePageState extends State<HomePage> {
 
   Widget _habitSection(BuildContext context) {
     return BlocBuilder<HabitCubit, HabitState>(builder: (context, state) {
-      print(state.runtimeType);
       if (state is HabitLoaded) {
         final habit = state.habit;
 

@@ -88,6 +88,6 @@ public class HabitService {
     public List<HabitRecordDTO> getHabitRecords(String userEmail, int month, int year) {
         var records = _recordRepository.findByUserEmailAndRecordMonth(userEmail, month, year);
 
-        return _mapper.recordEntityToDTO(records);
+        return records.stream().map(HabitRecordDTO::new).toList();
     }
 }

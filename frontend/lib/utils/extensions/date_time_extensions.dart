@@ -41,4 +41,8 @@ extension DateTimeExtensions on DateTime {
 
     return stringMesAtual[month - 1];
   }
+
+  bool isSameMonthAs(DateTime date) {
+    return month == date.month && year == date.year;
+  }
 }

@@ -14,9 +14,9 @@ public interface HabitRecordRepository extends JpaRepository<HabitRecord, UUID> 
     @Query("SELECT hr FROM HabitRecord hr WHERE hr.habit.user.email = :userEmail AND hr.recordDate = :recordDate")
     Optional<HabitRecord> findByUserEmailAndRecordDate(@Param("userEmail") String userEmail, @Param("recordDate") Date recordDate);
 
-    @Query("SELECT hr " +
+    @Query("SELECT day(hr.recordDate) " +
             "FROM HabitRecord hr " +
             "WHERE hr.habit.user.email = :userEmail AND MONTH(hr.recordDate) = :month AND YEAR(hr.recordDate) = :year " +
             "ORDER BY DAY(hr.recordDate) ASC")
-    List<HabitRecord> findByUserEmailAndRecordMonth(@Param("userEmail") String userEmail, @Param("month") int month, @Param("year") int year);
+    List<Integer> findByUserEmailAndRecordMonth(@Param("userEmail") String userEmail, @Param("month") int month, @Param("year") int year);
 }

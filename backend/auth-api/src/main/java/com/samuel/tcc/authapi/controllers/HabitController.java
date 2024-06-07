@@ -36,7 +36,7 @@ public class HabitController {
         return ResponseEntity.ok(_habitService.registerHabit(userEmail, dto.reason()));
     }
 
-    @GetMapping("/record")
+    @GetMapping("/records")
     public ResponseEntity<List<HabitRecordDTO>> getRecordsByMonth(
             @RequestHeader("Authorization") String bearerToken,
             @RequestBody HabitRecordRequestDTO dto
