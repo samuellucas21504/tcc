@@ -51,7 +51,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         await _authenticationRepository.logIn(
             email: state.email.value, password: state.password.value);
 
-        _habitRepository.fetchHabit();
+        await _habitRepository.fetchHabit();
 
         emit(state.copyWith(status: FormzSubmissionStatus.success));
       } catch (_) {

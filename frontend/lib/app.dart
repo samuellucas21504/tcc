@@ -1,6 +1,7 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:habit_repository/habit_repository.dart';
+import 'package:storage_repository/storage_repository.dart';
 import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
 import 'package:tcc/authentication/view/register/register_page.dart';
 import 'package:tcc/config/themes.dart';
@@ -22,13 +23,18 @@ class _AppState extends State<App> {
   late final AuthenticationRepository _authenticationRepository;
   late final UserRepository _userRepository;
   late final HabitRepository _habitRepository;
+  final StorageRepository _storageRepository = StorageRepository();
 
   @override
   void initState() {
     super.initState();
     _authenticationRepository = AuthenticationRepository();
-    _userRepository = UserRepository();
-    _habitRepository = HabitRepository();
+    _userRepository = UserRepository(storageRepository: _storageRepository);
+    _habitRepository = HabitRepository(
+      authenticationRepository: _authenticationRepository,
+      userRepository: _userRepository,
+      storageRepository: _storageRepository,
+    );
   }
 
   @override

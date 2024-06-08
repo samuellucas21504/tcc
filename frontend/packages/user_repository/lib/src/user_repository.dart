@@ -5,7 +5,10 @@ import 'package:user_repository/src/models/models.dart';
 
 class UserRepository {
   User? _user;
-  final _storageRepository = StorageRepository();
+  final _storageRepository;
+
+  UserRepository({required StorageRepository storageRepository})
+      : _storageRepository = storageRepository;
 
   Future<User?> getUser() async {
     if (_user != null) return _user;
@@ -19,7 +22,6 @@ class UserRepository {
   Future<void> changeUser(User user) async {
     await _storageRepository.write(User.key, jsonEncode(user.toJson()));
     _user = user;
-    print(user);
   }
 
   Future logout() async {

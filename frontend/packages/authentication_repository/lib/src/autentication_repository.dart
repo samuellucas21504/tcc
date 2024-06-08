@@ -17,7 +17,8 @@ class AuthenticationRepository {
   static const String tokenKey = 'token_key';
 
   final _controller = StreamController<AuthenticationStatus>();
-  final _userRepository = UserRepository();
+  final _userRepository =
+      UserRepository(storageRepository: StorageRepository());
   final _storageRepository = StorageRepository();
   final _dio = Dio();
 
@@ -49,12 +50,14 @@ class AuthenticationRepository {
     return 'Bearer ${token}';
   }
 
-  void _saveToken(String token) {
+  Future _saveToken(String token) async {
     _storageRepository.write(tokenKey, token);
+    this.token = token;
   }
 
-  void _deleteToken() {
-    _storageRepository.delete(tokenKey);
+  Future _deleteToken() async {
+    token = null;
+    await _storageRepository.delete(tokenKey);
   }
 
   Future<void> register({
@@ -78,9 +81,10 @@ class AuthenticationRepository {
       registeredAt: DateTime.parse(data['registered_at']),
       avatarUrl: data['avatar_url'],
     );
-    _saveToken(headers['token']!.first);
 
     await _userRepository.changeUser(dto);
+    await _saveToken(headers['token']!.first);
+
     _controller.add(AuthenticationStatus.authenticated);
   }
 
@@ -103,9 +107,9 @@ class AuthenticationRepository {
       registeredAt: DateTime.parse(data['registered_at']),
       avatarUrl: data['avatar_url'],
     );
-    _saveToken(headers['token']!.first);
 
     await _userRepository.changeUser(dto);
+    await _saveToken(headers['token']!.first);
 
     _controller.add(AuthenticationStatus.authenticated);
   }
@@ -114,10 +118,10 @@ class AuthenticationRepository {
     _controller.add(AuthenticationStatus.authenticated);
   }
 
-  void logOut() {
+  Future logOut() async {
+    await _deleteToken();
     _controller.add(AuthenticationStatus.unauthenticated);
     _userRepository.logout();
-    _deleteToken();
   }
 
   void dispose() => _controller.close();

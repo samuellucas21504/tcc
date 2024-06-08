@@ -9,9 +9,17 @@ import 'package:storage_repository/storage_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
 class HabitRepository {
-  final _userRepository = UserRepository();
-  final _authenticationRepository = AuthenticationRepository();
-  final _storageRepository = StorageRepository();
+  final _userRepository;
+  final _authenticationRepository;
+  final _storageRepository;
+
+  HabitRepository({
+    required AuthenticationRepository authenticationRepository,
+    required UserRepository userRepository,
+    required StorageRepository storageRepository,
+  })  : _authenticationRepository = authenticationRepository,
+        _userRepository = userRepository,
+        _storageRepository = storageRepository;
 
   Habit? _habit;
 
@@ -41,7 +49,7 @@ class HabitRepository {
     }
   }
 
-  void fetchHabit() async {
+  Future fetchHabit() async {
     final _dio = Dio();
     final bearerToken = await _authenticationRepository.getBearerToken();
     _dio.options.headers["Authorization"] = bearerToken;
@@ -82,16 +90,10 @@ class HabitRepository {
   }
 
   Future<Habit?> getHabit() async {
-    print(_habit);
     if (_habit != null) return _habit;
     var habit = await _storageRepository.read(Habit.key);
 
-    if (habit == null || habit.isEmpty) {
-      fetchHabit();
-      habit = await _storageRepository.read(Habit.key);
-
-      if (habit == null || habit.isEmpty) return null;
-    }
+    if (habit == null || habit.isEmpty) return null;
 
     return Habit.fromJson(habit);
   }
