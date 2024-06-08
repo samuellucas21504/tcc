@@ -44,9 +44,6 @@ class _HomePageState extends State<HomePage> {
       drawer: const CustomDrawer(),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
-          final user =
-              context.select((AuthenticationBloc bloc) => bloc.state.user);
-
           return PaddedScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

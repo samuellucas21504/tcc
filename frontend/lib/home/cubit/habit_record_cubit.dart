@@ -9,19 +9,21 @@ class HabitRecordCubit extends Cubit<HabitRecordState> {
 
   final HabitRepository _repository;
 
-  Future fetchRecords() async {
+  Future _fetchRecords(int month, int year, {bool firstFetch = false}) async {
     try {
-      emit(HabitRecordInitial());
-      final today = DateTime.now();
-
-      _repository.fetchRecords(today.month, today.year).then((records) {
-        bool todayNotRecorded =
-            records.isEmpty || records.last.day != DateTime.now().day;
+      _repository.fetchRecords(month, year).then((records) {
+        bool todayIsRecorded;
+        if (firstFetch) {
+          todayIsRecorded =
+              records.isNotEmpty && records.last.day == DateTime.now().day;
+        } else {
+          todayIsRecorded = (state as HabitRecordLoaded).isTodayRecorded;
+        }
 
         emit(HabitRecordLoaded(
           records: records,
-          monthShow: today,
-          isTodayRecorded: todayNotRecorded,
+          monthShow: DateTime(year, month),
+          isTodayRecorded: todayIsRecorded,
         ));
       });
     } catch (_) {
@@ -29,10 +31,43 @@ class HabitRecordCubit extends Cubit<HabitRecordState> {
     }
   }
 
+  Future fetchRecordsOfPreviousMonth() async {
+    final monthShow = (state as HabitRecordLoaded).monthShow;
+    int month = mod(monthShow.month - 1, 13);
+    int year = monthShow.year;
+    _fetchRecords(month, year);
+  }
+
+  Future fetchRecordsOfThisMonth() async {
+    emit(HabitRecordInitial());
+
+    final today = DateTime.now();
+    _fetchRecords(today.month, today.year, firstFetch: true);
+  }
+
+  Future fetchRecordsOfNextMonth() async {
+    print('entrou');
+    final monthShow = (state as HabitRecordLoaded).monthShow;
+    int month = mod(monthShow.month + 1, 13);
+    int year = monthShow.year;
+
+    if (month == 0) {
+      year += 1;
+      month = 1;
+    }
+    _fetchRecords(month, year);
+  }
+
+  int mod(int number, int max) {
+    return ((number % max) + max) % max;
+  }
+
   Future record() async {
     try {
       _repository.record();
+
       final currentState = (state as HabitRecordLoaded);
+
       emit(
         HabitRecordLoaded(
           records: [

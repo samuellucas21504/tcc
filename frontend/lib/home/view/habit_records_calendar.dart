@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
+import 'package:tcc/home/components/custom_icon_button.dart';
 import 'package:tcc/home/components/habit_record_day.dart';
 import 'package:tcc/home/components/text_button.dart';
 import 'package:tcc/home/components/texts/description_text.dart';
@@ -20,7 +21,7 @@ class _HabitRecordsCalendarState extends State {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<HabitRecordCubit>(context).fetchRecords();
+    BlocProvider.of<HabitRecordCubit>(context).fetchRecordsOfThisMonth();
   }
 
   final DateTime today = DateTime.now();
@@ -33,8 +34,6 @@ class _HabitRecordsCalendarState extends State {
         BlocBuilder<HabitRecordCubit, HabitRecordState>(
           builder: (context, state) {
             if (state is HabitRecordLoaded) {
-              final user =
-                  context.select((AuthenticationBloc bloc) => bloc.state.user);
               final state = context.select(
                   (HabitRecordCubit bloc) => (bloc.state as HabitRecordLoaded));
               final stringMesAtual =
@@ -62,16 +61,7 @@ class _HabitRecordsCalendarState extends State {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Expanded(
-                        flex: 1,
-                        child: IconButton(
-                          onPressed: () =>
-                              user.registeredAt!.isSameMonthAs(state.monthShow)
-                                  ? null
-                                  : print('1'),
-                          icon: const Icon(Icons.arrow_back_ios),
-                        ),
-                      ),
+                      _backButton(context),
                       Expanded(
                         flex: 6,
                         child: GridView.count(
@@ -83,13 +73,7 @@ class _HabitRecordsCalendarState extends State {
                           children: _generateDayRow(context),
                         ),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: IconButton(
-                          onPressed: () => print('1'),
-                          icon: const Icon(Icons.arrow_forward_ios),
-                        ),
-                      ),
+                      _nextButton(context),
                     ],
                   ),
                   _generateDayNotRecorded(state),
@@ -106,6 +90,50 @@ class _HabitRecordsCalendarState extends State {
           },
         )
       ],
+    );
+  }
+
+  Widget _backButton(BuildContext context) {
+    final user = context.select((AuthenticationBloc bloc) => bloc.state.user);
+    final state = context
+        .select((HabitRecordCubit bloc) => (bloc.state as HabitRecordLoaded));
+    final disabledColor = Theme.of(context).colorScheme.surface;
+
+    final isButtonActive = !user.registeredAt!.isSameMonthAs(state.monthShow);
+
+    return Expanded(
+      flex: 1,
+      child: CustomIconButton(
+        onPressed: BlocProvider.of<HabitRecordCubit>(context)
+            .fetchRecordsOfPreviousMonth,
+        isButtonActive: isButtonActive,
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: isButtonActive ? null : disabledColor,
+        ),
+      ),
+    );
+  }
+
+  Widget _nextButton(BuildContext context) {
+    final state = context
+        .select((HabitRecordCubit bloc) => (bloc.state as HabitRecordLoaded));
+    final disabledColor = Theme.of(context).colorScheme.surface;
+
+    final isButtonActive = state.monthShow.month != today.month &&
+        state.monthShow.year != today.year;
+
+    return Expanded(
+      flex: 1,
+      child: CustomIconButton(
+        onPressed:
+            BlocProvider.of<HabitRecordCubit>(context).fetchRecordsOfNextMonth,
+        isButtonActive: isButtonActive,
+        icon: Icon(
+          Icons.arrow_forward_ios,
+          color: isButtonActive ? null : disabledColor,
+        ),
+      ),
     );
   }
 
@@ -130,19 +158,18 @@ class _HabitRecordsCalendarState extends State {
 
   Widget _generateDayNotRecorded(HabitRecordLoaded state) {
     return state.isTodayRecorded
-        ? Column(
+        ? const SizedBox()
+        : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 15),
               const DescriptionText('Voce ainda não marcou hoje como feito.'),
               const SizedBox(height: 6),
               InteractiveButton(
-                onPressed: () =>
-                    BlocProvider.of<HabitRecordCubit>(context).record(),
+                onPressed: BlocProvider.of<HabitRecordCubit>(context).record,
                 text: 'Marcar dia como feito',
               ),
             ],
-          )
-        : const SizedBox();
+          );
   }
 }

@@ -41,8 +41,10 @@ class Themes {
     cardColor: ThemeColors.primary,
     hintColor: ThemeColors.primary,
     iconButtonTheme: const IconButtonThemeData(
-        style: ButtonStyle(
-            iconColor: MaterialStatePropertyAll(ThemeColors.surface))),
+      style: ButtonStyle(
+        iconColor: MaterialStatePropertyAll(ThemeColors.highlight),
+      ),
+    ),
     iconTheme: const IconThemeData(color: ThemeColors.surface),
     secondaryHeaderColor: ThemeColors.primary,
     primaryTextTheme: const TextTheme(

@@ -32,8 +32,6 @@ class HabitLoaded extends HabitState {
   HabitLoaded(this.habit);
 
   final Habit habit;
-
-  final DateTime currentMonthShow = DateTime.now();
 }
 
 class HabitRenewal extends HabitState {}

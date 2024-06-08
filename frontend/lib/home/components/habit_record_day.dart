@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/config/colors.dart';
 
 class HabitRecordDay extends StatelessWidget {
   final bool active;
@@ -13,9 +14,7 @@ class HabitRecordDay extends StatelessWidget {
       width: 12,
       height: 12,
       decoration: BoxDecoration(
-        color: active
-            ? const Color.fromARGB(255, 214, 207, 237)
-            : colorScheme.surface,
+        color: active ? ThemeColors.highlight : colorScheme.surface,
         borderRadius: const BorderRadius.all(Radius.circular(3)),
       ),
     );
