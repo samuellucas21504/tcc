@@ -14,13 +14,15 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) {
-      return BlocProvider(
-        create: (context) => HabitCubit(
-            repository: RepositoryProvider.of<HabitRepository>(context)),
-        child: const HomePage(),
-      );
-    });
+    return MaterialPageRoute<void>(
+        settings: const RouteSettings(name: 'home_page'),
+        builder: (_) {
+          return BlocProvider(
+            create: (context) => HabitCubit(
+                repository: RepositoryProvider.of<HabitRepository>(context)),
+            child: const HomePage(),
+          );
+        });
   }
 
   @override

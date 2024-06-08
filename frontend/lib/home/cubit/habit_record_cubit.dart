@@ -46,7 +46,6 @@ class HabitRecordCubit extends Cubit<HabitRecordState> {
   }
 
   Future fetchRecordsOfNextMonth() async {
-    print('entrou');
     final monthShow = (state as HabitRecordLoaded).monthShow;
     int month = mod(monthShow.month + 1, 13);
     int year = monthShow.year;

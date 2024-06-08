@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
 import 'package:tcc/config/themes.dart';
 import 'package:tcc/drawer/components/drawer_header.dart';
+import 'package:tcc/home/view/home_page.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -24,7 +25,26 @@ class CustomDrawer extends StatelessWidget {
                     title: const Text('Home'),
                     contentPadding: EdgeInsets.zero,
                     onTap: () {
-                      // Navigator.pop();
+                      Navigator.pop(context);
+                      bool isAlreadyOnHome =
+                          !(ModalRoute.of(context)?.settings.name ==
+                              HomePage.route().settings.name);
+                      if (isAlreadyOnHome) {
+                        Navigator.pushAndRemoveUntil(
+                            context, HomePage.route(), (route) => false);
+                      }
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Amigos'),
+                    contentPadding: EdgeInsets.zero,
+                    onTap: () {
+                      Navigator.pop(context);
+                      if (!(ModalRoute.of(context)?.settings.name ==
+                          HomePage.route().settings.name)) {
+                        Navigator.pushAndRemoveUntil(
+                            context, HomePage.route(), (route) => false);
+                      }
                     },
                   ),
                   ListTile(

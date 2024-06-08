@@ -44,12 +44,9 @@ class HabitRepository {
   void fetchHabit() async {
     final _dio = Dio();
     final bearerToken = await _authenticationRepository.getBearerToken();
-    print(bearerToken);
-    print('entrou');
     _dio.options.headers["Authorization"] = bearerToken;
 
     Response response = await _dio.get('${Constants.url}/habits');
-    print('passou');
     final data = response.data;
 
     final habit = Habit(
@@ -62,9 +59,6 @@ class HabitRepository {
   Future<List<HabitRecord>> fetchRecords(int month, int year) async {
     final _dio = Dio();
     final bearerToken = await _authenticationRepository.getBearerToken();
-    print(bearerToken);
-    print(month);
-    print(year);
 
     _dio.options.headers["Authorization"] = bearerToken;
 
@@ -84,8 +78,7 @@ class HabitRepository {
     final bearerToken = await _authenticationRepository.getBearerToken();
     _dio.options.headers["Authorization"] = bearerToken;
 
-    Response response = await _dio.post('${Constants.url}/habits/records');
-    print(response.statusCode);
+    await _dio.post('${Constants.url}/habits/records');
   }
 
   Future<Habit?> getHabit() async {
