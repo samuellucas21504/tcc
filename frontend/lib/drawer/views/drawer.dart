@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
 import 'package:tcc/config/themes.dart';
 import 'package:tcc/drawer/components/drawer_header.dart';
+import 'package:tcc/friends/views/friends_page.dart';
 import 'package:tcc/home/view/home_page.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -41,9 +42,9 @@ class CustomDrawer extends StatelessWidget {
                     onTap: () {
                       Navigator.pop(context);
                       if (!(ModalRoute.of(context)?.settings.name ==
-                          HomePage.route().settings.name)) {
+                          FriendsPage.route().settings.name)) {
                         Navigator.pushAndRemoveUntil(
-                            context, HomePage.route(), (route) => false);
+                            context, FriendsPage.route(), (route) => false);
                       }
                     },
                   ),
