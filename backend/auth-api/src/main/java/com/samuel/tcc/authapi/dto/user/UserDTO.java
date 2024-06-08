@@ -12,5 +12,8 @@ public record UserDTO (
         boolean habitRegistered,
         @JsonProperty("registered_at")
         @Nullable
-        Date registeredAt
+        Date registeredAt,
+        @JsonProperty("avatar_url")
+        @Nullable
+        String avatarUrl
 ) {}

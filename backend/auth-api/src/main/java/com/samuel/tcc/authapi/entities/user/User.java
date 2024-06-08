@@ -27,6 +27,7 @@ public class User {
     private String email;
     private String password;
     private boolean habitRegistered;
+    private String avatarUrl;
 
     @CreationTimestamp
     @Temporal(TemporalType.DATE)

@@ -24,6 +24,7 @@ mixin _$User {
   String get email => throw _privateConstructorUsedError;
   bool get habitRegistered => throw _privateConstructorUsedError;
   DateTime? get registeredAt => throw _privateConstructorUsedError;
+  String? get avatarUrl => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,7 +40,8 @@ abstract class $UserCopyWith<$Res> {
       {String name,
       String email,
       bool habitRegistered,
-      DateTime? registeredAt});
+      DateTime? registeredAt,
+      String? avatarUrl});
 }
 
 /// @nodoc
@@ -59,6 +61,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? email = null,
     Object? habitRegistered = null,
     Object? registeredAt = freezed,
+    Object? avatarUrl = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -77,6 +80,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.registeredAt
           : registeredAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      avatarUrl: freezed == avatarUrl
+          ? _value.avatarUrl
+          : avatarUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -92,7 +99,8 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       {String name,
       String email,
       bool habitRegistered,
-      DateTime? registeredAt});
+      DateTime? registeredAt,
+      String? avatarUrl});
 }
 
 /// @nodoc
@@ -109,6 +117,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? email = null,
     Object? habitRegistered = null,
     Object? registeredAt = freezed,
+    Object? avatarUrl = freezed,
   }) {
     return _then(_$UserImpl(
       name: null == name
@@ -127,6 +136,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.registeredAt
           : registeredAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      avatarUrl: freezed == avatarUrl
+          ? _value.avatarUrl
+          : avatarUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -138,7 +151,8 @@ class _$UserImpl implements _User {
       {required this.name,
       required this.email,
       required this.habitRegistered,
-      this.registeredAt});
+      this.registeredAt,
+      this.avatarUrl});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -151,10 +165,12 @@ class _$UserImpl implements _User {
   final bool habitRegistered;
   @override
   final DateTime? registeredAt;
+  @override
+  final String? avatarUrl;
 
   @override
   String toString() {
-    return 'User(name: $name, email: $email, habitRegistered: $habitRegistered, registeredAt: $registeredAt)';
+    return 'User(name: $name, email: $email, habitRegistered: $habitRegistered, registeredAt: $registeredAt, avatarUrl: $avatarUrl)';
   }
 
   @override
@@ -167,13 +183,15 @@ class _$UserImpl implements _User {
             (identical(other.habitRegistered, habitRegistered) ||
                 other.habitRegistered == habitRegistered) &&
             (identical(other.registeredAt, registeredAt) ||
-                other.registeredAt == registeredAt));
+                other.registeredAt == registeredAt) &&
+            (identical(other.avatarUrl, avatarUrl) ||
+                other.avatarUrl == avatarUrl));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, name, email, habitRegistered, registeredAt);
+  int get hashCode => Object.hash(
+      runtimeType, name, email, habitRegistered, registeredAt, avatarUrl);
 
   @JsonKey(ignore: true)
   @override
@@ -194,7 +212,8 @@ abstract class _User implements User {
       {required final String name,
       required final String email,
       required final bool habitRegistered,
-      final DateTime? registeredAt}) = _$UserImpl;
+      final DateTime? registeredAt,
+      final String? avatarUrl}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -206,6 +225,8 @@ abstract class _User implements User {
   bool get habitRegistered;
   @override
   DateTime? get registeredAt;
+  @override
+  String? get avatarUrl;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

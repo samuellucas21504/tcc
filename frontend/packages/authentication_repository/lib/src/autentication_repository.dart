@@ -76,6 +76,7 @@ class AuthenticationRepository {
       email: data['email'],
       habitRegistered: data['habit_registered'],
       registeredAt: DateTime.parse(data['registered_at']),
+      avatarUrl: data['avatar_url'],
     );
     _saveToken(headers['token']!.first);
 
@@ -100,6 +101,7 @@ class AuthenticationRepository {
       email: data['email'],
       habitRegistered: data['habit_registered'],
       registeredAt: DateTime.parse(data['registered_at']),
+      avatarUrl: data['avatar_url'],
     );
     _saveToken(headers['token']!.first);
 

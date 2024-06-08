@@ -13,6 +13,7 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       registeredAt: json['registeredAt'] == null
           ? null
           : DateTime.parse(json['registeredAt'] as String),
+      avatarUrl: json['avatarUrl'] as String?,
     );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
@@ -21,4 +22,5 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'email': instance.email,
       'habitRegistered': instance.habitRegistered,
       'registeredAt': instance.registeredAt?.toIso8601String(),
+      'avatarUrl': instance.avatarUrl,
     };

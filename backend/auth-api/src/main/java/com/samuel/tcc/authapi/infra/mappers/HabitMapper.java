@@ -13,11 +13,4 @@ import java.util.List;
 public interface HabitMapper {
     HabitDTO entityToDTO(Habit entity);
     List<HabitDTO> entityToDTO(List<Habit> entity);
-
-    @Mapping(source = "recordDate", target = "date")
-    HabitRecordDTO recordEntityToDTO(HabitRecord entity);
-    @Mapping(source = "recordDate", target = "date")
-
-    List<HabitRecordDTO> recordEntityToDTO(List<HabitRecord> entity);
-
 }

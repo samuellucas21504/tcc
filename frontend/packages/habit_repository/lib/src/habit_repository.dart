@@ -63,6 +63,9 @@ class HabitRepository {
     final _dio = Dio();
     final bearerToken = await _authenticationRepository.getBearerToken();
     print(bearerToken);
+    print(month);
+    print(year);
+
     _dio.options.headers["Authorization"] = bearerToken;
 
     Response response = await _dio.get(
@@ -86,13 +89,14 @@ class HabitRepository {
   }
 
   Future<Habit?> getHabit() async {
+    print(_habit);
     if (_habit != null) return _habit;
     var habit = await _storageRepository.read(Habit.key);
 
     if (habit == null || habit.isEmpty) {
       fetchHabit();
       habit = await _storageRepository.read(Habit.key);
-      print(habit);
+
       if (habit == null || habit.isEmpty) return null;
     }
 
@@ -100,10 +104,12 @@ class HabitRepository {
   }
 
   void _saveHabit(Habit habit) {
+    _habit = habit;
     _storageRepository.write(Habit.key, jsonEncode(habit.toJson()));
   }
 
   void logOut() {
+    _habit = null;
     _storageRepository.delete(Habit.key);
   }
 }

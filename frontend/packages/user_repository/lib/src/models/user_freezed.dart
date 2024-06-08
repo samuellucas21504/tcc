@@ -12,6 +12,7 @@ class User with _$User {
     required String email,
     required bool habitRegistered,
     DateTime? registeredAt,
+    String? avatarUrl,
   }) = _User;
 
   factory User.fromJson(String source) =>

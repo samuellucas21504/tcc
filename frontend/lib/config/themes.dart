@@ -37,6 +37,11 @@ class Themes {
       elevation: 0,
       scrimColor: Colors.black.withAlpha(135),
     ),
+    listTileTheme: const ListTileThemeData(
+      contentPadding: EdgeInsets.zero,
+      dense: true,
+      visualDensity: VisualDensity.compact,
+    ),
     canvasColor: ThemeColors.primary,
     cardColor: ThemeColors.primary,
     hintColor: ThemeColors.primary,
@@ -46,7 +51,7 @@ class Themes {
       ),
     ),
     iconTheme: const IconThemeData(color: ThemeColors.surface),
-    secondaryHeaderColor: ThemeColors.primary,
+    secondaryHeaderColor: ThemeColors.surface,
     primaryTextTheme: const TextTheme(
       displayLarge: TextStyle(color: ThemeColors.onPrimary),
       displayMedium: TextStyle(color: ThemeColors.onPrimary),
