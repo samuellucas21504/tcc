@@ -5,7 +5,6 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:habit_repository/habit_repository.dart';
 import 'package:habit_repository/src/config/constants.dart';
-import 'package:habit_repository/src/models/habit.dart';
 import 'package:storage_repository/storage_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -50,6 +49,7 @@ class HabitRepository {
     _dio.options.headers["Authorization"] = bearerToken;
 
     Response response = await _dio.get('${Constants.url}/habits');
+    print('passou');
     final data = response.data;
 
     final habit = Habit(
@@ -76,11 +76,25 @@ class HabitRepository {
     return HabitRecord.fromMapList(data);
   }
 
+  Future record() async {
+    final _dio = Dio();
+    final bearerToken = await _authenticationRepository.getBearerToken();
+    _dio.options.headers["Authorization"] = bearerToken;
+
+    Response response = await _dio.post('${Constants.url}/habits/records');
+    print(response.statusCode);
+  }
+
   Future<Habit?> getHabit() async {
     if (_habit != null) return _habit;
-    final habit = await _storageRepository.read(Habit.key);
+    var habit = await _storageRepository.read(Habit.key);
 
-    if (habit == null || habit.isEmpty) return null;
+    if (habit == null || habit.isEmpty) {
+      fetchHabit();
+      habit = await _storageRepository.read(Habit.key);
+      print(habit);
+      if (habit == null || habit.isEmpty) return null;
+    }
 
     return Habit.fromJson(habit);
   }

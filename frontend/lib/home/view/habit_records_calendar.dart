@@ -1,12 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:habit_repository/habit_repository.dart';
 import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
-import 'package:tcc/home/components/streak_calendar/streak_day.dart';
+import 'package:tcc/home/components/habit_record_day.dart';
+import 'package:tcc/home/components/text_button.dart';
+import 'package:tcc/home/components/texts/description_text.dart';
 import 'package:tcc/home/components/texts/section_header_text.dart';
-import 'package:tcc/home/cubit/habit_cubit.dart';
 import 'package:tcc/home/cubit/habit_record_cubit.dart';
 import 'package:tcc/utils/extensions/date_time_extensions.dart';
 import 'package:tcc/utils/extensions/string_extensions.dart';
@@ -94,6 +92,7 @@ class _HabitRecordsCalendarState extends State {
                       ),
                     ],
                   ),
+                  _generateDayNotRecorded(state),
                 ],
               );
             } else {
@@ -120,12 +119,30 @@ class _HabitRecordsCalendarState extends State {
 
     for (int i = 0; i < daysThisMonth; i++) {
       days.add(
-        StreakDay(
+        HabitRecordDay(
           active: records.any((element) => element.day == i + 1),
         ),
       );
     }
 
     return days;
+  }
+
+  Widget _generateDayNotRecorded(HabitRecordLoaded state) {
+    return state.isTodayRecorded
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 15),
+              const DescriptionText('Voce ainda não marcou hoje como feito.'),
+              const SizedBox(height: 6),
+              InteractiveButton(
+                onPressed: () =>
+                    BlocProvider.of<HabitRecordCubit>(context).record(),
+                text: 'Marcar dia como feito',
+              ),
+            ],
+          )
+        : const SizedBox();
   }
 }

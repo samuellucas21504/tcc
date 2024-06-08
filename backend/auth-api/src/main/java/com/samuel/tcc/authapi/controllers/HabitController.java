@@ -45,7 +45,7 @@ public class HabitController {
         return ResponseEntity.ok(_habitService.getHabitRecords(userEmail, dto.month(), dto.year()));
     }
 
-    @PostMapping("/record")
+    @PostMapping("/records")
     public ResponseEntity recordHabit(
             @RequestHeader("Authorization") String bearerToken) {
         var userEmail = _tokenService.validateBearerToken(bearerToken);

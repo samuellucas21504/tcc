@@ -53,6 +53,10 @@ class AuthenticationRepository {
     _storageRepository.write(tokenKey, token);
   }
 
+  void _deleteToken() {
+    _storageRepository.delete(tokenKey);
+  }
+
   Future<void> register({
     required String name,
     required String email,
@@ -111,6 +115,7 @@ class AuthenticationRepository {
   void logOut() {
     _controller.add(AuthenticationStatus.unauthenticated);
     _userRepository.logout();
+    _deleteToken();
   }
 
   void dispose() => _controller.close();

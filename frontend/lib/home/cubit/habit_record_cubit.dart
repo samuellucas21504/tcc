@@ -15,9 +15,34 @@ class HabitRecordCubit extends Cubit<HabitRecordState> {
       final today = DateTime.now();
 
       _repository.fetchRecords(today.month, today.year).then((records) {
-        print(records);
-        emit(HabitRecordLoaded(records: records, monthShow: today));
+        bool todayNotRecorded =
+            records.isEmpty || records.last.day != DateTime.now().day;
+
+        emit(HabitRecordLoaded(
+          records: records,
+          monthShow: today,
+          isTodayRecorded: todayNotRecorded,
+        ));
       });
+    } catch (_) {
+      print(_);
+    }
+  }
+
+  Future record() async {
+    try {
+      _repository.record();
+      final currentState = (state as HabitRecordLoaded);
+      emit(
+        HabitRecordLoaded(
+          records: [
+            ...currentState.records,
+            HabitRecord(day: DateTime.now().day)
+          ],
+          monthShow: currentState.monthShow,
+          isTodayRecorded: true,
+        ),
+      );
     } catch (_) {
       print(_);
     }
@@ -32,8 +57,10 @@ class HabitRecordLoaded extends HabitRecordState {
   HabitRecordLoaded({
     required this.records,
     required this.monthShow,
+    required this.isTodayRecorded,
   });
 
-  List<HabitRecord> records;
-  DateTime monthShow;
+  final List<HabitRecord> records;
+  final DateTime monthShow;
+  final bool isTodayRecorded;
 }

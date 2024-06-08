@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class StreakDay extends StatelessWidget {
+class HabitRecordDay extends StatelessWidget {
   final bool active;
 
-  const StreakDay({super.key, required this.active});
+  const HabitRecordDay({super.key, required this.active});
 
   @override
   Widget build(BuildContext context) {

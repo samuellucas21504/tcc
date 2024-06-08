@@ -5,8 +5,7 @@ import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart'
 import 'package:tcc/home/components/drawer/drawer.dart';
 import 'package:tcc/home/components/drawer/menu_button.dart';
 import 'package:tcc/home/components/padded_scrollview.dart';
-import 'package:tcc/home/components/streak_calendar/streak_calendar.dart';
-import 'package:tcc/home/components/text_button.dart';
+import 'package:tcc/home/view/habit_records_calendar.dart';
 import 'package:tcc/home/components/text_section.dart';
 import 'package:tcc/home/components/texts/title_text.dart';
 import 'package:tcc/home/cubit/habit_cubit.dart';
@@ -53,15 +52,6 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 _habitSection(context),
-                const TitleText(
-                  'Voce ainda não marcou hoje como feito',
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 6),
-                InteractiveButton(
-                  onPressed: () => print('a'),
-                  text: 'Marcar dia feito',
-                ),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 12.0),
                   child: Divider(),

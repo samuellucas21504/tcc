@@ -9,9 +9,9 @@ class HabitCubit extends Cubit<HabitState> {
   final HabitRepository _repository;
 
   Future fetchHabit() async {
+    print('fetch');
     try {
       emit(HabitInitial());
-      print('a');
       _repository.getHabit().then((habit) {
         print(habit);
         if (habit != null) {
