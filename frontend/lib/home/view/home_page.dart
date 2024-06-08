@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habit_repository/habit_repository.dart';
-import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
 import 'package:tcc/home/components/drawer/drawer.dart';
 import 'package:tcc/home/components/drawer/menu_button.dart';
 import 'package:tcc/home/components/padded_scrollview.dart';
