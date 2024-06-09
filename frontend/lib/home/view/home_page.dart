@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habit_repository/habit_repository.dart';
 import 'package:tcc/drawer/views/drawer.dart';
 import 'package:tcc/drawer/components/menu_button.dart';
-import 'package:tcc/home/components/padded_scrollview.dart';
+import 'package:tcc/components/padded_scrollview.dart';
 import 'package:tcc/home/view/habit_records_calendar.dart';
 import 'package:tcc/home/components/text_section.dart';
 import 'package:tcc/home/components/texts/title_text.dart';

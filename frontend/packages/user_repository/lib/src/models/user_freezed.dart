@@ -15,6 +15,14 @@ class User with _$User {
     String? avatarUrl,
   }) = _User;
 
+  factory User.fromMap(Map<String, dynamic> source) => User(
+        email: source['email'],
+        name: source['name'],
+        habitRegistered: source['habit_registered'],
+        avatarUrl: source['avatar_url'],
+        registeredAt: DateTime.parse(source['registered_at']),
+      );
+
   factory User.fromJson(String source) =>
       _$UserFromJson(json.decode(source) as Map<String, dynamic>);
 

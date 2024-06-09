@@ -74,13 +74,7 @@ class AuthenticationRepository {
     final data = response.data;
     final headers = response.headers;
 
-    final dto = User(
-      name: data['name'],
-      email: data['email'],
-      habitRegistered: data['habit_registered'],
-      registeredAt: DateTime.parse(data['registered_at']),
-      avatarUrl: data['avatar_url'],
-    );
+    final dto = User.fromMap(data);
 
     await _userRepository.changeUser(dto);
     await _saveToken(headers['token']!.first);
@@ -100,13 +94,7 @@ class AuthenticationRepository {
     final data = response.data;
     final headers = response.headers;
 
-    final dto = User(
-      name: data['name'],
-      email: data['email'],
-      habitRegistered: data['habit_registered'],
-      registeredAt: DateTime.parse(data['registered_at']),
-      avatarUrl: data['avatar_url'],
-    );
+    final dto = User.fromMap(data);
 
     await _userRepository.changeUser(dto);
     await _saveToken(headers['token']!.first);

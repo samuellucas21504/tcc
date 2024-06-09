@@ -48,7 +48,7 @@ class _AppState extends State<App> {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(value: _authenticationRepository),
-        RepositoryProvider.value(value: _habitRepository)
+        RepositoryProvider.value(value: _habitRepository),
       ],
       child: BlocProvider(
         create: (_) => AuthenticationBloc(

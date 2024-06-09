@@ -5,6 +5,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:habit_repository/habit_repository.dart';
 import 'package:habit_repository/src/config/constants.dart';
+import 'package:habit_repository/src/utils/extensions/dio_extensions.dart';
 import 'package:storage_repository/storage_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -30,7 +31,7 @@ class HabitRepository {
     final body = Habit(reason: objective);
 
     Response response =
-        await _dio.post('${Constants.url}/habits', data: body.toJson());
+        await _dio.post('${Constants.url}', data: body.toJson());
 
     try {
       final user = await _userRepository.getUser();
@@ -52,9 +53,9 @@ class HabitRepository {
   Future fetchHabit() async {
     final _dio = Dio();
     final bearerToken = await _authenticationRepository.getBearerToken();
-    _dio.options.headers["Authorization"] = bearerToken;
+    _dio.setBearerToken(bearerToken);
 
-    Response response = await _dio.get('${Constants.url}/habits');
+    Response response = await _dio.get('${Constants.url}');
     final data = response.data;
 
     final habit = Habit(
@@ -71,7 +72,7 @@ class HabitRepository {
     _dio.options.headers["Authorization"] = bearerToken;
 
     Response response = await _dio.get(
-      '${Constants.url}/habits/records',
+      '${Constants.url}/records',
       data: {
         'month': month,
         'year': year,
@@ -86,7 +87,7 @@ class HabitRepository {
     final bearerToken = await _authenticationRepository.getBearerToken();
     _dio.options.headers["Authorization"] = bearerToken;
 
-    await _dio.post('${Constants.url}/habits/records');
+    await _dio.post('${Constants.url}/records');
   }
 
   Future<Habit?> getHabit() async {

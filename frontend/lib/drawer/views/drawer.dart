@@ -23,6 +23,7 @@ class CustomDrawer extends StatelessWidget {
                 children: [
                   const UserDrawerHeader(),
                   ListTile(
+                    leading: const Icon(Icons.home_outlined),
                     title: const Text('Home'),
                     contentPadding: EdgeInsets.zero,
                     onTap: () {
@@ -37,6 +38,7 @@ class CustomDrawer extends StatelessWidget {
                     },
                   ),
                   ListTile(
+                    leading: const Icon(Icons.person_outline),
                     title: const Text('Amigos'),
                     contentPadding: EdgeInsets.zero,
                     onTap: () {
@@ -49,6 +51,7 @@ class CustomDrawer extends StatelessWidget {
                     },
                   ),
                   ListTile(
+                    leading: const Icon(Icons.arrow_back),
                     title: const Text('Sair'),
                     onTap: () {
                       context

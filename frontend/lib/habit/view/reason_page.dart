@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
 import 'package:tcc/habit/view/reason_form.dart';
-import 'package:tcc/home/components/padded_scrollview.dart';
+import 'package:tcc/components/padded_scrollview.dart';
 import 'package:tcc/home/components/texts/description_text.dart';
 
 class ReasonPage extends StatelessWidget {

@@ -1,0 +1,11 @@
+name: friends_repository
+description: Repositório que irá cuidar da parte dos amigos
+publish_to: none
+
+environment:
+  sdk: '>=3.2.3 <4.0.0'
+
+dependencies:
+  dio: ^5.4.3+1
+  authentication_repository:
+    path: ../authentication_repository/

@@ -1,5 +1,6 @@
 package com.samuel.tcc.authapi.infra.mappers;
 
+import com.samuel.tcc.authapi.dto.user.Friend;
 import com.samuel.tcc.authapi.dto.user.UserDTO;
 import com.samuel.tcc.authapi.entities.user.User;
 import org.mapstruct.Mapper;
@@ -18,5 +19,8 @@ public interface UserMapper {
     @Mapping(source = "createdAt", target = "registeredAt")
 
     List<UserDTO> entityToDTO(List<User> users);
+
+    Friend entityToFriend(User entity);
+    List<Friend> entityToFriend(List<User> entities);
 
 }

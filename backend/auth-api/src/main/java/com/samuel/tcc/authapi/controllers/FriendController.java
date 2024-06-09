@@ -1,5 +1,6 @@
 package com.samuel.tcc.authapi.controllers;
 
+import com.samuel.tcc.authapi.dto.user.Friend;
 import com.samuel.tcc.authapi.dto.user.FriendRequestBodyDTO;
 import com.samuel.tcc.authapi.dto.user.FriendRequestDTO;
 import com.samuel.tcc.authapi.dto.user.UserDTO;
@@ -21,7 +22,7 @@ public class FriendController {
     private final FriendService _friendService;
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getFriends(@RequestHeader("Authorization") String bearerToken) {
+    public ResponseEntity<List<Friend>> getFriends(@RequestHeader("Authorization") String bearerToken) {
         String requesterEmail = _tokenService.validateBearerToken(bearerToken);
         return ResponseEntity.ok(_userService.getFriendsByEmail(requesterEmail));
     }
