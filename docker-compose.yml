@@ -1,6 +1,15 @@
 version: "2"
 services:
-  mysql:
+  auth-api:
+    build:
+      context: ./backend/auth-api/
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  db:
     container_name: mysql
     image: mysql:8
     ports:
