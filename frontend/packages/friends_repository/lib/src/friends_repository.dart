@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:friends_repository/models/friend.dart';
