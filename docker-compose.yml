@@ -8,6 +8,12 @@ services:
       - "8080:8080"
     depends_on:
       - db
+    networks:
+      - mynetwork
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/tcc
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
 
   db:
     container_name: mysql
@@ -22,5 +28,12 @@ services:
 
     volumes:
       - my-datavolume:/var/lib/mysql
+    networks:
+      - mynetwork
+
 volumes:
   my-datavolume:
+
+networks:
+  mynetwork:
+    driver: bridge
