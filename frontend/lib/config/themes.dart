@@ -22,7 +22,7 @@ class Themes {
       background: ThemeColors.background,
       onBackground: ThemeColors.onBackground,
       surface: ThemeColors.surface,
-      onSurface: ThemeColors.onPrimary,
+      onSurface: ThemeColors.onSurface,
       shadow: Colors.transparent,
       surfaceTint: ThemeColors.primary,
     ),
@@ -47,7 +47,7 @@ class Themes {
     hintColor: ThemeColors.primary,
     iconButtonTheme: const IconButtonThemeData(
       style: ButtonStyle(
-        iconColor: MaterialStatePropertyAll(ThemeColors.highlight),
+        iconColor: MaterialStatePropertyAll(ThemeColors.onSurface),
       ),
     ),
     iconTheme: const IconThemeData(color: ThemeColors.surface),

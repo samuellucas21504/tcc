@@ -5,6 +5,8 @@ import 'package:friends_repository/friends_repository.dart';
 import 'package:tcc/drawer/views/drawer.dart';
 import 'package:tcc/drawer/components/menu_button.dart';
 import 'package:tcc/components/padded_scrollview.dart';
+import 'package:tcc/friends/bloc/friends_cubirt.dart';
+import 'package:tcc/friends/views/friends_list.dart';
 
 class FriendsPage extends StatefulWidget {
   const FriendsPage({super.key});
@@ -34,8 +36,8 @@ class _FriendsPageState extends State<FriendsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => RepositoryProvider.value(value: _friendsRepository),
+    return BlocProvider(
+      create: (context) => FriendsCubit(repository: _friendsRepository),
       child: Scaffold(
         appBar: AppBar(
           leading: const MenuButton(),
@@ -43,13 +45,11 @@ class _FriendsPageState extends State<FriendsPage> {
         drawer: const CustomDrawer(),
         body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
-            return PaddedScrollView(
+            return const PaddedScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  ElevatedButton(
-                      onPressed: _friendsRepository.getFriends,
-                      child: const Text('teste'))
+                  FriendsList(),
                 ],
               ),
             );

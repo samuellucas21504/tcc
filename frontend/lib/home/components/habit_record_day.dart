@@ -14,7 +14,7 @@ class HabitRecordDay extends StatelessWidget {
       width: 12,
       height: 12,
       decoration: BoxDecoration(
-        color: active ? ThemeColors.highlight : colorScheme.surface,
+        color: active ? ThemeColors.onSurface : colorScheme.surface,
         borderRadius: const BorderRadius.all(Radius.circular(3)),
       ),
     );

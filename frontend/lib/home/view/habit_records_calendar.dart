@@ -95,6 +95,7 @@ class _HabitRecordsCalendarState extends State {
 
   Widget _backButton(BuildContext context) {
     final user = context.select((AuthenticationBloc bloc) => bloc.state.user);
+    print("a@ $user");
     final state = context
         .select((HabitRecordCubit bloc) => (bloc.state as HabitRecordLoaded));
     final disabledColor = Theme.of(context).colorScheme.surface;

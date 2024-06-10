@@ -28,10 +28,12 @@ class HabitRepository {
     final _dio = Dio();
     final bearerToken = await _authenticationRepository.getBearerToken();
     _dio.options.headers["Authorization"] = bearerToken;
-    final body = Habit(reason: objective);
+
+    final body = {"reason": objective};
+    print(jsonEncode(body));
 
     Response response =
-        await _dio.post('${Constants.url}', data: body.toJson());
+        await _dio.post('${Constants.url}', data: jsonEncode(body));
 
     try {
       final user = await _userRepository.getUser();
