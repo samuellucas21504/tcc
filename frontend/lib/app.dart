@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:friends_repository/friends_repository.dart';
 import 'package:habit_repository/habit_repository.dart';
 import 'package:storage_repository/storage_repository.dart';
 import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
@@ -23,6 +24,7 @@ class _AppState extends State<App> {
   late final AuthenticationRepository _authenticationRepository;
   late final UserRepository _userRepository;
   late final HabitRepository _habitRepository;
+  late final FriendsRepository _friendsRepository;
   final StorageRepository _storageRepository = StorageRepository();
 
   @override
@@ -30,6 +32,8 @@ class _AppState extends State<App> {
     super.initState();
     _authenticationRepository = AuthenticationRepository();
     _userRepository = UserRepository(storageRepository: _storageRepository);
+    _friendsRepository =
+        FriendsRepository(authenticationRepository: _authenticationRepository);
     _habitRepository = HabitRepository(
       authenticationRepository: _authenticationRepository,
       userRepository: _userRepository,
@@ -49,6 +53,7 @@ class _AppState extends State<App> {
       providers: [
         RepositoryProvider.value(value: _authenticationRepository),
         RepositoryProvider.value(value: _habitRepository),
+        RepositoryProvider.value(value: _friendsRepository)
       ],
       child: BlocProvider(
         create: (_) => AuthenticationBloc(

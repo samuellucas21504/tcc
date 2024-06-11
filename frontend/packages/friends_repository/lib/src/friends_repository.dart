@@ -25,4 +25,16 @@ class FriendsRepository {
     return (data.map((object) => Friend.fromMap(object)).toList())
         .cast<Friend>();
   }
+
+  Future sendFriendRequest(String email) async {
+    final dio = Dio();
+    final bearerToken = await _authenticationRepository.getBearerToken();
+
+    dio.setBearerToken(bearerToken);
+
+    final response =
+        await dio.post('${Constants.url}/request', data: {"email": email});
+
+    print(response.statusCode);
+  }
 }

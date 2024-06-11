@@ -8,8 +8,6 @@ class Themes {
       backgroundColor: ThemeColors.background,
       shadowColor: Colors.transparent,
       elevation: 0,
-      surfaceTintColor: Colors.transparent,
-      foregroundColor: ThemeColors.background,
     ),
     colorScheme: const ColorScheme(
       brightness: Brightness.dark,
@@ -51,7 +49,7 @@ class Themes {
       ),
     ),
     iconTheme: const IconThemeData(color: ThemeColors.surface),
-    secondaryHeaderColor: ThemeColors.surface,
+    secondaryHeaderColor: ThemeColors.onSurface,
     primaryTextTheme: const TextTheme(
       displayLarge: TextStyle(color: ThemeColors.onPrimary),
       displayMedium: TextStyle(color: ThemeColors.onPrimary),
@@ -69,10 +67,12 @@ class Themes {
         gapPadding: 4,
       ),
       hintStyle: TextStyle(
-          color: ThemeColors.onBackground, fontWeight: FontWeight.w400),
+        color: ThemeColors.onSurface,
+        fontWeight: FontWeight.w400,
+      ),
       floatingLabelBehavior: FloatingLabelBehavior.always,
       floatingLabelAlignment: FloatingLabelAlignment.start,
-      labelStyle: TextStyle(color: ThemeColors.onBackground),
+      labelStyle: TextStyle(color: ThemeColors.onSurface),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: ThemeColors.onBackground, width: 1),
         borderRadius: BorderRadius.zero,
@@ -85,19 +85,74 @@ class Themes {
         color: ThemeColors.onBackground,
       ),
     ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        backgroundColor: ThemeColors.onBackground,
-        textStyle: const TextStyle(
-          color: ThemeColors.background,
-          fontWeight: FontWeight.w500,
-        ),
-        foregroundColor: ThemeColors.background,
-        disabledForegroundColor: ThemeColors.background,
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        shape: MaterialStatePropertyAll(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+        textStyle: MaterialStateProperty.resolveWith((states) {
+          return TextStyle(
+            color: states.contains(MaterialState.disabled)
+                ? ThemeColors.onBackground.withAlpha(50)
+                : ThemeColors.onBackground,
+            fontWeight: FontWeight.w500,
+          );
+        }),
+        foregroundColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.disabled) ||
+              states.contains(MaterialState.pressed)) {
+            return ThemeColors.onBackground.withAlpha(40);
+          }
+
+          return ThemeColors.onBackground;
+        }),
       ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        shape: MaterialStatePropertyAll(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+        backgroundColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.pressed)) {
+            return ThemeColors.surface;
+          }
+          if (states.contains(MaterialState.disabled)) {
+            return ThemeColors.onPrimary.withAlpha(40);
+          }
+          return ThemeColors.onPrimary;
+        }),
+        textStyle: MaterialStateProperty.resolveWith((states) {
+          return TextStyle(
+            color: states.contains(MaterialState.disabled)
+                ? ThemeColors.onBackground
+                : ThemeColors.background,
+            fontWeight: FontWeight.w500,
+          );
+        }),
+        foregroundColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return ThemeColors.onBackground;
+          }
+          if (states.contains(MaterialState.pressed)) {
+            return ThemeColors.onBackground;
+          }
+
+          return ThemeColors.background;
+        }),
+      ),
+    ),
+    applyElevationOverlayColor: false,
+    dialogTheme: const DialogTheme(
+      backgroundColor: ThemeColors.surface,
+      elevation: 0,
+      shadowColor: Colors.transparent,
+      alignment: Alignment.center,
+      titleTextStyle: TextStyle(
+        color: ThemeColors.onSurface,
+        fontSize: 22,
+        fontWeight: FontWeight.w500,
+      ),
+      iconColor: ThemeColors.onSurface,
+      contentTextStyle: TextStyle(color: ThemeColors.onSurface),
     ),
   );
 
