@@ -1,6 +1,7 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:dio/dio.dart';
-import 'package:friends_repository/models/friend.dart';
+import 'package:friends_repository/friends_repository.dart';
+import 'package:friends_repository/models/friend_dto.dart';
 import 'package:friends_repository/src/config/constants.dart';
 import 'package:friends_repository/src/extensions/dio_extensions.dart';
 
@@ -11,7 +12,7 @@ class FriendsRepository {
 
   final AuthenticationRepository _authenticationRepository;
 
-  Future<List<Friend>> getFriends() async {
+  Future<FriendDTO> getFriends() async {
     final dio = Dio();
     final bearerToken = await _authenticationRepository.getBearerToken();
 
@@ -19,11 +20,7 @@ class FriendsRepository {
 
     final response = await dio.get('${Constants.url}');
 
-    final data = response.data;
-    print(data);
-
-    return (data.map((object) => Friend.fromMap(object)).toList())
-        .cast<Friend>();
+    return FriendDTO.fromMap(response.data);
   }
 
   Future sendFriendRequest(String email) async {

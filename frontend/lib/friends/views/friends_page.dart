@@ -1,13 +1,11 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:friends_repository/friends_repository.dart';
-import 'package:tcc/config/themes.dart';
 import 'package:tcc/drawer/views/drawer.dart';
 import 'package:tcc/drawer/components/menu_button.dart';
 import 'package:tcc/components/padded_scrollview.dart';
 import 'package:tcc/friends/bloc/friends_bloc.dart';
 import 'package:tcc/friends/views/friends_list.dart';
+import 'package:tcc/friends/views/friends_requests_page.dart';
 
 class FriendsPage extends StatefulWidget {
   const FriendsPage({super.key});
@@ -30,22 +28,11 @@ class FriendsPage extends StatefulWidget {
 
 class _FriendsPageState extends State<FriendsPage> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: const MenuButton(),
-        title: const Text(
-          'Amigos',
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 20,
-          ),
-        ),
+        title: const Text('Amigos'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -53,7 +40,11 @@ class _FriendsPageState extends State<FriendsPage> {
                 _sendFriendRequest(context, context.read<FriendsBloc>()),
             icon: const Icon(Icons.person_add),
           ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
+          IconButton(
+              onPressed: () {
+                Navigator.push(context, FriendsRequestPage.route(context));
+              },
+              icon: const Icon(Icons.notifications)),
           const SizedBox(
             width: 12,
           ),

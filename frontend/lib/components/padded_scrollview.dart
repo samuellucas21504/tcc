@@ -11,7 +11,7 @@ class PaddedScrollView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final horizontalPadding = size.width * 0.165;
+    final horizontalPadding = size.width * 0.1;
 
     return SingleChildScrollView(
       child: Padding(

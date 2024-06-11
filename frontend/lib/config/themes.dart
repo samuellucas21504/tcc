@@ -8,6 +8,11 @@ class Themes {
       backgroundColor: ThemeColors.background,
       shadowColor: Colors.transparent,
       elevation: 0,
+      titleTextStyle: TextStyle(
+        fontWeight: FontWeight.w400,
+        fontSize: 20,
+      ),
+      centerTitle: true,
     ),
     colorScheme: const ColorScheme(
       brightness: Brightness.dark,
@@ -46,6 +51,8 @@ class Themes {
     iconButtonTheme: const IconButtonThemeData(
       style: ButtonStyle(
         iconColor: MaterialStatePropertyAll(ThemeColors.onSurface),
+        padding: MaterialStatePropertyAll(EdgeInsets.zero),
+        visualDensity: VisualDensity(horizontal: -4, vertical: -4),
       ),
     ),
     iconTheme: const IconThemeData(color: ThemeColors.surface),
@@ -154,6 +161,8 @@ class Themes {
       iconColor: ThemeColors.onSurface,
       contentTextStyle: TextStyle(color: ThemeColors.onSurface),
     ),
+    pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {TargetPlatform.android: CupertinoPageTransitionsBuilder()}),
   );
 
   static themeWithTransparentDivider(BuildContext context) =>

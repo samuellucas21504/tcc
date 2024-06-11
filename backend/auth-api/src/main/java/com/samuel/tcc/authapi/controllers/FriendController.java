@@ -1,17 +1,12 @@
 package com.samuel.tcc.authapi.controllers;
 
-import com.samuel.tcc.authapi.dto.user.Friend;
-import com.samuel.tcc.authapi.dto.user.FriendRequestBodyDTO;
-import com.samuel.tcc.authapi.dto.user.FriendRequestDTO;
-import com.samuel.tcc.authapi.dto.user.UserDTO;
+import com.samuel.tcc.authapi.dto.user.*;
 import com.samuel.tcc.authapi.infra.security.TokenService;
 import com.samuel.tcc.authapi.services.FriendService;
 import com.samuel.tcc.authapi.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/friends")
@@ -22,15 +17,9 @@ public class FriendController {
     private final FriendService _friendService;
 
     @GetMapping
-    public ResponseEntity<List<Friend>> getFriends(@RequestHeader("Authorization") String bearerToken) {
+    public ResponseEntity<FriendResponseDTO> getFriends(@RequestHeader("Authorization") String bearerToken) {
         String requesterEmail = _tokenService.validateBearerToken(bearerToken);
-        return ResponseEntity.ok(_userService.getFriendsByEmail(requesterEmail));
-    }
-
-    @GetMapping(value = "/request")
-    public ResponseEntity<List<FriendRequestDTO>> getFriendRequests(@RequestHeader("Authorization") String bearerToken) {
-        String requesterEmail = _tokenService.validateBearerToken(bearerToken);
-        return ResponseEntity.ok(_friendService.getFriendRequestsByEmail(requesterEmail));
+        return ResponseEntity.ok(_userService.getFriendsAndRequestsByEmail(requesterEmail));
     }
 
     @PostMapping("/request")

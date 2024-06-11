@@ -31,7 +31,7 @@ class FriendRequest {
   factory FriendRequest.fromMap(Map<String, dynamic> map) {
     return FriendRequest(
       requester: User.fromMap(map['requester'] as Map<String, dynamic>),
-      date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
+      date: DateTime.parse(map['date'] as String),
     );
   }
 

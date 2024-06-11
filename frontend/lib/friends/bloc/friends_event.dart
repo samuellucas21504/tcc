@@ -11,15 +11,13 @@ final class FetchFriends extends FriendsEvent {
   const FetchFriends();
 }
 
-final class FriendRequestModalOpened extends FriendsEvent {
-  const FriendRequestModalOpened();
-}
-
-final class FriendRequestModalClosed extends FriendsEvent {
-  const FriendRequestModalClosed();
-}
-
 final class FriendRequestSubmitted extends FriendsEvent {
   final String email;
   const FriendRequestSubmitted(this.email);
+}
+
+final class FriendRequestStateChanged extends FriendsEvent {
+  final String email;
+  final bool accepted;
+  const FriendRequestStateChanged(this.email, {this.accepted = false});
 }

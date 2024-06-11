@@ -1,7 +1,7 @@
 package com.samuel.tcc.authapi.services;
 
 import com.samuel.tcc.authapi.dto.auth.RegisterRequestDTO;
-import com.samuel.tcc.authapi.dto.user.Friend;
+import com.samuel.tcc.authapi.dto.user.FriendResponseDTO;
 import com.samuel.tcc.authapi.dto.user.UserDTO;
 import com.samuel.tcc.authapi.entities.user.User;
 import com.samuel.tcc.authapi.infra.mappers.UserMapper;
@@ -72,9 +72,10 @@ public class UserService {
         _repository.save(requester);
     }
 
-    public List<Friend> getFriendsByEmail(String email) {
+    public FriendResponseDTO getFriendsAndRequestsByEmail(String email) {
         var user = _repository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        var requests = _friendService.getFriendRequestsByEmail(email);
 
-        return _mapper.entityToFriend(user.getFriends());
+        return new FriendResponseDTO(_mapper.entityToFriend(user.getFriends()), requests);
     }
 }
