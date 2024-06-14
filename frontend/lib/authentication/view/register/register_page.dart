@@ -15,9 +15,9 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Center(
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
           child: SingleChildScrollView(
             child: BlocProvider(
               create: (context) {
@@ -31,6 +31,17 @@ class RegisterPage extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 50, vertical: 24),
                 child: Column(
                   children: [
+                    const Text(
+                      'HABITS',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 2.5,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
                     const RegisterForm(),
                     const Divider(),
                     const Padding(padding: EdgeInsets.all(15)),

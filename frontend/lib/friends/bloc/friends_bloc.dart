@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:friends_repository/friends_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -11,6 +12,7 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
         super(FriendsState.unknown()) {
     on<FetchFriends>(_handleFetchFriends);
     on<FriendRequestSubmitted>(_handleFriendRequestSubmitted);
+    on<FriendRequestStateChanged>(_handleFriendRequestStateChanged);
   }
 
   final FriendsRepository _repository;
@@ -35,5 +37,16 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     } catch (_) {
       print(_);
     }
+  }
+
+  Future _handleFriendRequestStateChanged(
+      FriendRequestStateChanged event, Emitter<FriendsState> emit) async {
+    try {
+      await _repository.handleFriendRequest(event.email, event.accepted);
+      state.requests
+          .removeWhere((element) => element.requester.email == event.email);
+      emit(FriendsState.loaded(state.friends, state.requests));
+      add(const FetchFriends());
+    } catch (_) {}
   }
 }

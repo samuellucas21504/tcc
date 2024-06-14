@@ -4,6 +4,7 @@ import 'package:tcc/drawer/views/drawer.dart';
 import 'package:tcc/drawer/components/menu_button.dart';
 import 'package:tcc/components/padded_scrollview.dart';
 import 'package:tcc/friends/bloc/friends_bloc.dart';
+import 'package:tcc/friends/components/notification_bell.dart';
 import 'package:tcc/friends/views/friends_list.dart';
 import 'package:tcc/friends/views/friends_requests_page.dart';
 
@@ -40,11 +41,18 @@ class _FriendsPageState extends State<FriendsPage> {
                 _sendFriendRequest(context, context.read<FriendsBloc>()),
             icon: const Icon(Icons.person_add),
           ),
-          IconButton(
-              onPressed: () {
-                Navigator.push(context, FriendsRequestPage.route(context));
-              },
-              icon: const Icon(Icons.notifications)),
+          BlocBuilder<FriendsBloc, FriendsState>(
+            builder: (context, state) {
+              return IconButton(
+                  onPressed: () {
+                    Navigator.push(context, FriendsRequestPage.route(context));
+                  },
+                  icon: NotificationBell(
+                    notificationQuantity:
+                        context.read<FriendsBloc>().state.requests.length,
+                  ));
+            },
+          ),
           const SizedBox(
             width: 12,
           ),

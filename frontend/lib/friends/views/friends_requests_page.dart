@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:friends_repository/models/models.dart';
 import 'package:tcc/components/padded_scrollview.dart';
 import 'package:tcc/friends/bloc/friends_bloc.dart';
 import 'package:tcc/friends/components/friend_request_card.dart';
-import 'package:user_repository/user_repository.dart';
 
 class FriendsRequestPage extends StatefulWidget {
   const FriendsRequestPage({super.key});
@@ -24,14 +22,8 @@ class FriendsRequestPage extends StatefulWidget {
 
 class _FriendsRequestPageState extends State<FriendsRequestPage> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final bloc = context.read<FriendsBloc>();
-    print(bloc.state.requests);
 
     return Scaffold(
       appBar: AppBar(
@@ -42,13 +34,17 @@ class _FriendsRequestPageState extends State<FriendsRequestPage> {
       ),
       body: PaddedScrollView(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ...bloc.state.requests
-                  .map((request) =>
-                      FriendRequestCard(friendRequest: request, bloc: bloc))
-                  .toList(),
-            ],
+          child: BlocBuilder<FriendsBloc, FriendsState>(
+            builder: (context, state) {
+              return Column(
+                children: [
+                  ...bloc.state.requests
+                      .map((request) =>
+                          FriendRequestCard(friendRequest: request, bloc: bloc))
+                      .toList(),
+                ],
+              );
+            },
           ),
         ),
       ),
