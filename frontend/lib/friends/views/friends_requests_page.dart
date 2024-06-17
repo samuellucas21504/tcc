@@ -36,14 +36,15 @@ class _FriendsRequestPageState extends State<FriendsRequestPage> {
         child: SingleChildScrollView(
           child: BlocBuilder<FriendsBloc, FriendsState>(
             builder: (context, state) {
-              return Column(
-                children: [
-                  ...bloc.state.requests
-                      .map((request) =>
-                          FriendRequestCard(friendRequest: request, bloc: bloc))
-                      .toList(),
-                ],
-              );
+              return bloc.state.requests.isEmpty
+                  ? const Center(
+                      child: Text('Você não tem nenhum pedido de amizade!'))
+                  : Column(
+                      children: bloc.state.requests
+                          .map((request) => FriendRequestCard(
+                              friendRequest: request, bloc: bloc))
+                          .toList(),
+                    );
             },
           ),
         ),
