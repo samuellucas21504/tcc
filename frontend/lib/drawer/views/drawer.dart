@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
+import 'package:tcc/challenges/views/challenges_page.dart';
 import 'package:tcc/config/themes.dart';
 import 'package:tcc/drawer/components/drawer_header.dart';
 import 'package:tcc/friends/views/friends_page.dart';
@@ -17,11 +18,12 @@ class CustomDrawer extends StatelessWidget {
           data: Themes.themeWithTransparentDivider(context),
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
                   const UserDrawerHeader(),
+                  const SizedBox(height: 15),
                   ListTile(
                     leading: const Icon(Icons.home_outlined),
                     title: const Text('Home'),
@@ -47,6 +49,19 @@ class CustomDrawer extends StatelessWidget {
                           FriendsPage.route().settings.name)) {
                         Navigator.pushAndRemoveUntil(
                             context, FriendsPage.route(), (route) => false);
+                      }
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.ads_click),
+                    title: const Text('Desafios'),
+                    contentPadding: EdgeInsets.zero,
+                    onTap: () {
+                      Navigator.pop(context);
+                      if (!(ModalRoute.of(context)?.settings.name ==
+                          ChallengesPage.route().settings.name)) {
+                        Navigator.pushAndRemoveUntil(
+                            context, ChallengesPage.route(), (route) => false);
                       }
                     },
                   ),

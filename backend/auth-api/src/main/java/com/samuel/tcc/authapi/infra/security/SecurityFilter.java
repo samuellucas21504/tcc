@@ -1,7 +1,7 @@
 package com.samuel.tcc.authapi.infra.security;
 
 import com.samuel.tcc.authapi.entities.user.User;
-import com.samuel.tcc.authapi.repositories.UserRepository;
+import com.samuel.tcc.authapi.repositories.user.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

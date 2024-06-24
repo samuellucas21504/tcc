@@ -55,6 +55,8 @@ dependencies:
     path: packages/habit_repository
   friends_repository:
     path: packages/friends_repository
+  challenges_repository:
+    path: packages/challenges_repository
 
 dev_dependencies:
   flutter_test:

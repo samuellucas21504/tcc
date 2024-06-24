@@ -4,7 +4,7 @@ import com.samuel.tcc.authapi.dto.user.FriendRequestDTO;
 import com.samuel.tcc.authapi.entities.user.FriendRequest;
 import com.samuel.tcc.authapi.entities.user.User;
 import com.samuel.tcc.authapi.infra.mappers.FriendRequestMapper;
-import com.samuel.tcc.authapi.repositories.FriendRequestRepository;
+import com.samuel.tcc.authapi.repositories.user.FriendRequestRepository;
 import com.samuel.tcc.authapi.services.exceptions.FriendRequestNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +18,7 @@ public class FriendService {
     private final FriendRequestRepository _friendRequestRepository;
     private final FriendRequestMapper _mapper;
 
+    @Transactional
     public void sendFriendRequest(User requester,User friend) {
         FriendRequest friendRequest = new FriendRequest();
         friendRequest.setActive(true);

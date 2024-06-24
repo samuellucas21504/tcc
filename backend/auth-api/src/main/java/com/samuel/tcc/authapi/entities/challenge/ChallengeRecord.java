@@ -1,0 +1,35 @@
+package com.samuel.tcc.authapi.entities.challenge;
+
+import com.samuel.tcc.authapi.entities.user.User;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.Date;
+import java.util.UUID;
+
+@Entity
+@Table(name = "CHALLENGE_RECORDS")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ChallengeRecord {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "challenge_id", referencedColumnName = "id")
+    private Challenge challenge;
+
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
+    private Date recordDate;
+}

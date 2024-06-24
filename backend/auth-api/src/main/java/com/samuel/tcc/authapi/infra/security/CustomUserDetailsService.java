@@ -1,7 +1,7 @@
 package com.samuel.tcc.authapi.infra.security;
 
 import com.samuel.tcc.authapi.entities.user.User;
-import com.samuel.tcc.authapi.repositories.UserRepository;
+import com.samuel.tcc.authapi.repositories.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

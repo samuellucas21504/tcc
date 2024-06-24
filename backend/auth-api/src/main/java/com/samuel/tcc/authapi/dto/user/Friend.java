@@ -6,6 +6,6 @@ import jakarta.annotation.Nullable;
 public record Friend(String name,
                      String email,
                      @JsonProperty("avatar_url")
-                        @Nullable
-                        String avatarUrl
+                     @Nullable
+                     String avatarUrl
 ) { }

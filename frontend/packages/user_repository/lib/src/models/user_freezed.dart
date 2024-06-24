@@ -26,6 +26,10 @@ class User with _$User {
   factory User.fromJson(String source) =>
       _$UserFromJson(json.decode(source) as Map<String, dynamic>);
 
+  static List<User> fromMapList(List<dynamic> sourceList) {
+    return sourceList.map((source) => User.fromMap(source)).toList();
+  }
+
   static const empty = User(
     name: '-',
     email: '-',

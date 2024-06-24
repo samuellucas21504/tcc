@@ -1,4 +1,4 @@
-package com.samuel.tcc.authapi.repositories;
+package com.samuel.tcc.authapi.repositories.user;
 
 import com.samuel.tcc.authapi.entities.user.FriendRequest;
 import org.springframework.data.jpa.repository.JpaRepository;

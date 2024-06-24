@@ -1,4 +1,4 @@
-package com.samuel.tcc.authapi.repositories;
+package com.samuel.tcc.authapi.repositories.habit;
 
 import com.samuel.tcc.authapi.entities.habit.Habit;
 import com.samuel.tcc.authapi.entities.habit.HabitRecord;

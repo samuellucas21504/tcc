@@ -1,26 +1,26 @@
 version: "2"
 services:
-  llm-api:
-    build:
-      context: ./backend/llm-api
-      dockerfile: Dockerfile
-    networks:
-      - mynetwork
+  # llm-api:
+  #   build:
+  #     context: ./backend/llm-api
+  #     dockerfile: Dockerfile
+  #   networks:
+  #     - mynetwork
 
-  auth-api:
-    build:
-      context: ./backend/auth-api/
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-    networks:
-      - mynetwork
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/tcc
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+  # auth-api:
+  #   build:
+  #     context: ./backend/auth-api/
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - mynetwork
+  #   environment:
+  #     SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/tcc
+  #     SPRING_DATASOURCE_USERNAME: root
+  #     SPRING_DATASOURCE_PASSWORD: root
 
   db:
     container_name: mysql

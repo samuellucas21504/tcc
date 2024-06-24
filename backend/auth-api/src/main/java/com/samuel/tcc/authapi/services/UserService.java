@@ -5,14 +5,14 @@ import com.samuel.tcc.authapi.dto.user.FriendResponseDTO;
 import com.samuel.tcc.authapi.dto.user.UserDTO;
 import com.samuel.tcc.authapi.entities.user.User;
 import com.samuel.tcc.authapi.infra.mappers.UserMapper;
-import com.samuel.tcc.authapi.repositories.UserRepository;
+import com.samuel.tcc.authapi.repositories.user.UserRepository;
 import com.samuel.tcc.authapi.services.exceptions.UserBefriendingItSelfException;
 import com.samuel.tcc.authapi.services.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,6 +47,7 @@ public class UserService {
         return _repository.findByEmail(email).isPresent();
     }
 
+    @Transactional
     public void sendFriendRequest(String requesterEmail,String friendEmail) {
         User requester = getUserByEmail(requesterEmail).orElseThrow(UserNotFoundException::new);
         User friend = getUserByEmail(friendEmail).orElseThrow(UserNotFoundException::new);
