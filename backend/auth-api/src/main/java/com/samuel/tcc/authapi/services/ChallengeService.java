@@ -60,20 +60,23 @@ public class ChallengeService {
 
     @Transactional
     public void recordChallenge(String userEmail, UUID uuid) {
-        Date today = new Date();
-
         Challenge challenge = _repository.findById(uuid).orElseThrow(ChallengeNotFoundException::new);
-        var optRecord = _recordRepository.findByUserEmailAndRecordDate(userEmail, today);
-        if(optRecord.isPresent()) return;
+        var optRecord = _recordRepository.findByUserEmailAndRecordDate(userEmail, uuid);
+        ChallengeRecord record;
+        if(optRecord.isPresent()) {
+            record = optRecord.get();
+        }
+        else {
+            User user = _userService.getUserByEmail(userEmail).orElseThrow(UserNotFoundException::new);
 
-        User user = _userService.getUserByEmail(userEmail).orElseThrow(UserNotFoundException::new);
+            record = new ChallengeRecord();
+            record.setChallenge(challenge);
+            record.setUser(user);
+        }
 
-        ChallengeRecord challengeRecord = new ChallengeRecord();
-        challengeRecord.setChallenge(challenge);
-        challengeRecord.setUser(user);
-        challengeRecord.setRecordDate(today);
+        record.setStreak(record.getStreak() + 1);
 
-        _recordRepository.save(challengeRecord);
+        _recordRepository.save(record);
     }
 
     @Transactional

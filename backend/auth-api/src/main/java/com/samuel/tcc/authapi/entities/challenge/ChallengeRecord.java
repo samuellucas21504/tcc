@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
 import java.util.UUID;
@@ -29,7 +31,13 @@ public class ChallengeRecord {
     @JoinColumn(name = "challenge_id", referencedColumnName = "id")
     private Challenge challenge;
 
+    @CreatedDate
     @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private Date recordDate;
+    private Date createdAt;
+
+    @LastModifiedDate
+    @Temporal(TemporalType.DATE)
+    private Date lastModified;
+
+    private long streak = 0;
 }
