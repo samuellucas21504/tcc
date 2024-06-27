@@ -39,7 +39,11 @@ class _ChallengesPageState extends State<ChallengesPage> {
         actions: [
           IconButton(
             onPressed: () =>
-                Navigator.push(context, CreateChallengeView.route()),
+                Navigator.push(context, CreateChallengeView.route()).then(
+              (value) {
+                context.read<ChallengesBloc>().add(const FetchChallenges());
+              },
+            ),
             icon: const Icon(Icons.add),
           ),
           BlocBuilder<ChallengesBloc, ChallengesState>(
@@ -70,48 +74,6 @@ class _ChallengesPageState extends State<ChallengesPage> {
       body: const PaddedScrollView(
         child: Center(child: ChallengesList()),
       ),
-    );
-  }
-
-  Future<void> _sendChallengeRequest(
-      BuildContext context, ChallengesBloc bloc) {
-    String email = '';
-
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Enviar pedido de Amizade'),
-          content: SizedBox(
-            height: 120,
-            child: Column(
-              children: [
-                const Text(
-                    'Digite o email do usuário que você quer adicionar:'),
-                const SizedBox(height: 20),
-                TextField(
-                  onChanged: (value) => email = value,
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancelar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Enviar'),
-              onPressed: () {
-                Navigator.pop(context);
-                // bloc.add((email));
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

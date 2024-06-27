@@ -1,5 +1,4 @@
 import 'package:challenges_repository/challenges_repository.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -36,9 +35,7 @@ class ChallengesBloc extends Bloc<ChallengesEvent, ChallengesState> {
       ChallengeCreationRequest event, Emitter<ChallengesState> emit) async {
     try {
       await _repository.register(event.name, event.finishesAt).then((dto) {
-        state.challenges.add(dto);
-
-        add(ChallengeCreated());
+        emit(ChallengesState.created());
       });
     } catch (_) {
       print("@a $_");

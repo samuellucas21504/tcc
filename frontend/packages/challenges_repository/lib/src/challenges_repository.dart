@@ -18,14 +18,13 @@ class ChallengesRepository {
   }) : _authenticationRepository = authenticationRepository;
 
   Future<Challenge> register(String name, DateTime finishesAt) async {
-    final format = DateFormat('yyyy-MM-dd');
     final _dio = Dio();
     final bearerToken = await _authenticationRepository.getBearerToken();
     _dio.setBearerToken(bearerToken);
 
     final body = {
       "name": name,
-      "finishes_at": format.format(finishesAt),
+      "finishes_at": finishesAt.millisecondsSinceEpoch,
     };
 
     print(body);

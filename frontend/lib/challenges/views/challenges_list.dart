@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcc/challenges/bloc/challenges_bloc.dart';
+import 'package:tcc/challenges/components/challenge_card.dart';
 
 class ChallengesList extends StatefulWidget {
   const ChallengesList({super.key});
@@ -25,7 +26,8 @@ class _FriendListState extends State<ChallengesList> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: state.challenges
-                  .map((challenge) => Text(challenge.name))
+                  .map((challenge) =>
+                      ChallengeCard(challenge: challenge, bloc: context.read()))
                   .toList(),
             );
           }

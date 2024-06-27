@@ -15,6 +15,9 @@ _$ChallengeImpl _$$ChallengeImplFromJson(Map<String, dynamic> json) =>
       participants: (json['participants'] as List<dynamic>?)
           ?.map((e) => User.fromJson(e as String))
           .toList(),
+      finishesAt: json['finishesAt'] == null
+          ? null
+          : DateTime.parse(json['finishesAt'] as String),
     );
 
 Map<String, dynamic> _$$ChallengeImplToJson(_$ChallengeImpl instance) =>
@@ -22,4 +25,5 @@ Map<String, dynamic> _$$ChallengeImplToJson(_$ChallengeImpl instance) =>
       'name': instance.name,
       'creator': instance.creator,
       'participants': instance.participants,
+      'finishesAt': instance.finishesAt?.toIso8601String(),
     };

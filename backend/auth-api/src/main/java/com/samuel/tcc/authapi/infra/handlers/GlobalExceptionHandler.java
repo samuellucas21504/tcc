@@ -66,4 +66,12 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(IncorrectFormatException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<CustomError> handleIncorrectFormat(IncorrectFormatException ex) {
+        CustomError error = new CustomError(ex.getErrorCode(), ex.getMessage());
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 }

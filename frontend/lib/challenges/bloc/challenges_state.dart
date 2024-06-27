@@ -24,10 +24,7 @@ class ChallengesState {
           challenges: challenges,
           requests: requests,
         );
+  ChallengesState.created() : this._(status: ChallengesStatus.newChallenge);
 }
 
-enum ChallengesStatus {
-  unknown,
-  fetching,
-  loaded,
-}
+enum ChallengesStatus { unknown, fetching, loaded, newChallenge }

@@ -2,9 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-
-import 'package:tcc/authentication/bloc/login/login_bloc.dart';
 import 'package:tcc/challenges/bloc/challenges_bloc.dart';
+import 'package:tcc/challenges/views/challenges_page.dart';
 import 'package:tcc/components/padded_scrollview.dart';
 
 class CreateChallengeView extends StatefulWidget {
@@ -27,20 +26,20 @@ class CreateChallengeView extends StatefulWidget {
 }
 
 class _CreateChallengeViewState extends State<CreateChallengeView> {
-  String name = '';
+  final _textController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  DateFormat format = DateFormat('dd/MM/yyyy');
   DateTime selectedDate = DateTime.now();
 
-  DateFormat format = DateFormat('dd/MM/yyyy');
-
-  void handleNameChange(String name) {
-    setState(() {
-      this.name = name;
-    });
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
   }
 
   void handleSubmitButton() {
     context.read<ChallengesBloc>().add(ChallengeCreationRequest(
-          name,
+          _textController.text,
           selectedDate,
         ));
   }
@@ -64,8 +63,11 @@ class _CreateChallengeViewState extends State<CreateChallengeView> {
 
     return BlocListener<ChallengesBloc, ChallengesState>(
       listener: (context, state) {
-        if (state is ChallengeCreated) {
-          Navigator.pop(context);
+        if (state.status == ChallengesStatus.newChallenge) {
+          Navigator.popUntil(
+              context,
+              (route) =>
+                  ChallengesPage.route().settings.name == route.settings.name);
         }
       },
       child: Scaffold(
@@ -77,58 +79,57 @@ class _CreateChallengeViewState extends State<CreateChallengeView> {
         ),
         body: SafeArea(
           child: PaddedScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _NameInput(handleNameChange),
-                const SizedBox(height: 15),
-                Row(children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => _selectDate(context),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: colorScheme.background,
-                        foregroundColor: colorScheme.onBackground,
-                        side: BorderSide(color: colorScheme.onPrimary),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    controller: _textController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'O nome não pode ser nulo.';
+                      }
+                      return null;
+                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: const InputDecoration(
+                      labelText: 'Nome do Desafio',
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Row(children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () => _selectDate(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: colorScheme.background,
+                          foregroundColor: colorScheme.onBackground,
+                          side: BorderSide(color: colorScheme.onPrimary),
+                        ),
+                        child: const Text('Selecionar data de fim do desafio'),
                       ),
-                      child: const Text('Selecionar data de fim do desafio'),
-                    ),
-                  )
-                ]),
-                Text('Data do fim do desafio: ${format.format(selectedDate)}'),
-                const SizedBox(height: 25),
-                Row(children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: handleSubmitButton,
-                      child: const Text('Criar o desafio'),
-                    ),
-                  )
-                ]),
-              ],
+                    )
+                  ]),
+                  Text(
+                      'Data do fim do desafio: ${format.format(selectedDate)}'),
+                  const SizedBox(height: 25),
+                  Row(children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () => {
+                          if (_formKey.currentState!.validate())
+                            handleSubmitButton()
+                        },
+                        child: const Text('Criar o desafio'),
+                      ),
+                    )
+                  ]),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _NameInput extends StatelessWidget {
-  final void Function(String)? onChanged;
-
-  const _NameInput(
-    this.onChanged, {
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      key: const Key('challengeForm_nameInput_key'),
-      onChanged: onChanged,
-      decoration: const InputDecoration(
-        labelText: 'Nome do Desafio',
       ),
     );
   }

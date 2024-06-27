@@ -12,12 +12,14 @@ class Challenge with _$Challenge {
     required String name,
     User? creator,
     List<User>? participants,
+    DateTime? finishesAt,
   }) = _Challenge;
 
   factory Challenge.fromMap(Map<String, dynamic> source) => Challenge(
         name: source['name'],
         creator: User.fromMap(source['creator']),
         participants: User.fromMapList(source['participants']),
+        finishesAt: DateTime.parse(source['finishes_at'] as String),
       );
 
   factory Challenge.fromJson(String source) =>

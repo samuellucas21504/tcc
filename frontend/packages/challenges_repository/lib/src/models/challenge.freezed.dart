@@ -23,6 +23,7 @@ mixin _$Challenge {
   String get name => throw _privateConstructorUsedError;
   User? get creator => throw _privateConstructorUsedError;
   List<User>? get participants => throw _privateConstructorUsedError;
+  DateTime? get finishesAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,11 @@ abstract class $ChallengeCopyWith<$Res> {
   factory $ChallengeCopyWith(Challenge value, $Res Function(Challenge) then) =
       _$ChallengeCopyWithImpl<$Res, Challenge>;
   @useResult
-  $Res call({String name, User? creator, List<User>? participants});
+  $Res call(
+      {String name,
+      User? creator,
+      List<User>? participants,
+      DateTime? finishesAt});
 
   $UserCopyWith<$Res>? get creator;
 }
@@ -56,6 +61,7 @@ class _$ChallengeCopyWithImpl<$Res, $Val extends Challenge>
     Object? name = null,
     Object? creator = freezed,
     Object? participants = freezed,
+    Object? finishesAt = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -70,6 +76,10 @@ class _$ChallengeCopyWithImpl<$Res, $Val extends Challenge>
           ? _value.participants
           : participants // ignore: cast_nullable_to_non_nullable
               as List<User>?,
+      finishesAt: freezed == finishesAt
+          ? _value.finishesAt
+          : finishesAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 
@@ -94,7 +104,11 @@ abstract class _$$ChallengeImplCopyWith<$Res>
       __$$ChallengeImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, User? creator, List<User>? participants});
+  $Res call(
+      {String name,
+      User? creator,
+      List<User>? participants,
+      DateTime? finishesAt});
 
   @override
   $UserCopyWith<$Res>? get creator;
@@ -114,6 +128,7 @@ class __$$ChallengeImplCopyWithImpl<$Res>
     Object? name = null,
     Object? creator = freezed,
     Object? participants = freezed,
+    Object? finishesAt = freezed,
   }) {
     return _then(_$ChallengeImpl(
       name: null == name
@@ -128,6 +143,10 @@ class __$$ChallengeImplCopyWithImpl<$Res>
           ? _value._participants
           : participants // ignore: cast_nullable_to_non_nullable
               as List<User>?,
+      finishesAt: freezed == finishesAt
+          ? _value.finishesAt
+          : finishesAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -136,7 +155,10 @@ class __$$ChallengeImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ChallengeImpl implements _Challenge {
   const _$ChallengeImpl(
-      {required this.name, this.creator, final List<User>? participants})
+      {required this.name,
+      this.creator,
+      final List<User>? participants,
+      this.finishesAt})
       : _participants = participants;
 
   factory _$ChallengeImpl.fromJson(Map<String, dynamic> json) =>
@@ -157,8 +179,11 @@ class _$ChallengeImpl implements _Challenge {
   }
 
   @override
+  final DateTime? finishesAt;
+
+  @override
   String toString() {
-    return 'Challenge(name: $name, creator: $creator, participants: $participants)';
+    return 'Challenge(name: $name, creator: $creator, participants: $participants, finishesAt: $finishesAt)';
   }
 
   @override
@@ -169,13 +194,15 @@ class _$ChallengeImpl implements _Challenge {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.creator, creator) || other.creator == creator) &&
             const DeepCollectionEquality()
-                .equals(other._participants, _participants));
+                .equals(other._participants, _participants) &&
+            (identical(other.finishesAt, finishesAt) ||
+                other.finishesAt == finishesAt));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, name, creator,
-      const DeepCollectionEquality().hash(_participants));
+      const DeepCollectionEquality().hash(_participants), finishesAt);
 
   @JsonKey(ignore: true)
   @override
@@ -195,7 +222,8 @@ abstract class _Challenge implements Challenge {
   const factory _Challenge(
       {required final String name,
       final User? creator,
-      final List<User>? participants}) = _$ChallengeImpl;
+      final List<User>? participants,
+      final DateTime? finishesAt}) = _$ChallengeImpl;
 
   factory _Challenge.fromJson(Map<String, dynamic> json) =
       _$ChallengeImpl.fromJson;
@@ -206,6 +234,8 @@ abstract class _Challenge implements Challenge {
   User? get creator;
   @override
   List<User>? get participants;
+  @override
+  DateTime? get finishesAt;
   @override
   @JsonKey(ignore: true)
   _$$ChallengeImplCopyWith<_$ChallengeImpl> get copyWith =>

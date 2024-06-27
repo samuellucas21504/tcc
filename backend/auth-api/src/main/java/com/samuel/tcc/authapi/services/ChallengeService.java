@@ -13,7 +13,9 @@ import com.samuel.tcc.authapi.repositories.challenge.ChallengeRecordRepository;
 import com.samuel.tcc.authapi.repositories.challenge.ChallengeRepository;
 import com.samuel.tcc.authapi.repositories.challenge.ChallengeRequestRepository;
 import com.samuel.tcc.authapi.services.exceptions.ChallengeNotFoundException;
+import com.samuel.tcc.authapi.services.exceptions.IncorrectFormatException;
 import com.samuel.tcc.authapi.services.exceptions.UserNotFoundException;
+import com.samuel.tcc.authapi.utils.EpochConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,10 +43,14 @@ public class ChallengeService {
     public ChallengeDTO register(ChallengeRegisterDTO dto, String userEmail) {
         var user = _userService.getUserByEmail(userEmail).orElseThrow(UserNotFoundException::new);
 
+        if(dto.name().isEmpty()) throw new IncorrectFormatException();
+
+        Date finishesAt = EpochConverter.convert(dto.finishesAt());
+
         Challenge challenge = new Challenge();
         challenge.setCreator(user);
         challenge.getParticipants().add(user);
-        challenge.setFinishesAt(dto.finishesAt());
+        challenge.setFinishesAt(finishesAt);
         challenge.setName(dto.name());
 
         _repository.save(challenge);

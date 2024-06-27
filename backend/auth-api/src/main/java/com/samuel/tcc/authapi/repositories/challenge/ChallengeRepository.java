@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ChallengeRepository extends JpaRepository<Challenge, UUID> {
-    @Query("SELECT ch FROM CHALLENGES ch JOIN ch.participants p WHERE p.email = :userEmail AND ch.finishesAt <= current date ")
+    @Query("SELECT ch FROM CHALLENGES ch JOIN ch.participants p WHERE p.email = :userEmail AND ch.finishesAt >= current date ")
     List<Challenge> findUserChallenges(@Param("userEmail") String userEmail);
 }

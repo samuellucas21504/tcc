@@ -52,17 +52,4 @@ class ChallengeRequest {
 
   factory ChallengeRequest.fromJson(String source) =>
       ChallengeRequest.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  String toString() => 'ChallengeRequest(requester: $requester, date: $date)';
-
-  @override
-  bool operator ==(covariant ChallengeRequest other) {
-    if (identical(this, other)) return true;
-
-    return other.requester == requester && other.date == date;
-  }
-
-  @override
-  int get hashCode => requester.hashCode ^ date.hashCode;
 }
