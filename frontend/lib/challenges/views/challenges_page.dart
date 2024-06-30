@@ -7,7 +7,6 @@ import 'package:tcc/drawer/views/drawer.dart';
 import 'package:tcc/drawer/components/menu_button.dart';
 import 'package:tcc/components/padded_scrollview.dart';
 import 'package:tcc/friends/components/notification_bell.dart';
-import 'package:tcc/friends/views/friends_list.dart';
 
 class ChallengesPage extends StatefulWidget {
   const ChallengesPage({super.key});

@@ -16,7 +16,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import com.samuel.tcc.authapi.entities.user.User;
 
 
-
+import javax.swing.text.html.Option;
 import java.util.*;
 
 @Entity(name = "CHALLENGES")
@@ -38,12 +38,17 @@ public class Challenge {
 
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "challenge_participants",
+            joinColumns = @JoinColumn(name = "challenge_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     private List<User> participants = new ArrayList<>();
+
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<ChallengeRecord> records = new HashSet<>();
 
     @CreationTimestamp
     @Temporal(TemporalType.DATE)
     private Date createdAt;
-
-    @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<ChallengeRecord> records = new HashSet<>();
 }

@@ -19,7 +19,7 @@ class ChallengeCard extends StatelessWidget {
           settings: const RouteSettings(name: 'challenges_page'),
           builder: (_) {
             return ChallengePage(
-              challenge: challenge,
+              id: challenge.id!,
               bloc: bloc,
             );
           }),

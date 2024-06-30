@@ -7,7 +7,6 @@ import 'package:challenges_repository/src/config/constants.dart';
 import 'package:challenges_repository/src/models/challenge_dto.dart';
 import 'package:challenges_repository/src/utils/extensions/dio_extensions.dart';
 import 'package:dio/dio.dart';
-import 'package:intl/intl.dart';
 import 'package:user_repository/user_repository.dart';
 
 class ChallengesRepository {
@@ -30,12 +29,11 @@ class ChallengesRepository {
     print(body);
     print(jsonEncode(body));
 
-    Response response =
-        await _dio.post('${Constants.url}', data: jsonEncode(body));
-
     try {
-      final data = response.data;
+      Response response =
+          await _dio.post('${Constants.url}', data: jsonEncode(body));
 
+      final data = response.data;
       final habit = Challenge(
         name: data['name'],
         creator: User.fromMap(data['creator']),
@@ -43,7 +41,7 @@ class ChallengesRepository {
 
       return habit;
     } catch (e) {
-      print(e);
+      print("@a ${e}");
       rethrow;
     }
   }
@@ -83,11 +81,14 @@ class ChallengesRepository {
     return ChallengeRecord.fromMapList(data);
   }
 
-  Future record() async {
+  Future record(String id) async {
     final _dio = Dio();
     final bearerToken = await _authenticationRepository.getBearerToken();
     _dio.options.headers["Authorization"] = bearerToken;
 
-    await _dio.post('${Constants.url}/records');
+    final url = '${Constants.url}/${id}/records';
+    print(url);
+
+    await _dio.post(url);
   }
 }

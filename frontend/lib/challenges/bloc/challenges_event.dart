@@ -29,3 +29,10 @@ final class ChallengeRequestStateChanged extends ChallengesEvent {
   final bool accepted;
   const ChallengeRequestStateChanged(this.email, {this.accepted = false});
 }
+
+final class RecordChallengeSubmitted extends ChallengesEvent {
+  final String challengeId;
+  final User user;
+
+  const RecordChallengeSubmitted(this.challengeId, this.user);
+}

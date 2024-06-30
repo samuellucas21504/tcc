@@ -1,18 +1,18 @@
-import 'package:challenges_repository/challenges_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
 import 'package:tcc/challenges/bloc/challenges_bloc.dart';
-import 'package:tcc/challenges/views/challenges_list.dart';
+import 'package:tcc/challenges/components/challenge_record_card.dart';
 import 'package:tcc/components/padded_scrollview.dart';
 
 class ChallengePage extends StatefulWidget {
   const ChallengePage({
     super.key,
-    required this.challenge,
+    required this.id,
     required this.bloc,
   });
 
-  final Challenge challenge;
+  final String id;
   final ChallengesBloc bloc;
 
   @override
@@ -22,22 +22,87 @@ class ChallengePage extends StatefulWidget {
 class _ChallengePageState extends State<ChallengePage> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: widget.bloc,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.challenge.name),
-          centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ),
-        body: const PaddedScrollView(
-          child: Center(child: ChallengesList()),
-        ),
-      ),
-    );
+    final width = MediaQuery.of(context).size.width;
+
+    return BlocBuilder<ChallengesBloc, ChallengesState>(
+        bloc: widget.bloc,
+        builder: (context, state) {
+          final user =
+              context.select((AuthenticationBloc bloc) => bloc.state.user);
+          final challenge =
+              state.challenges.firstWhere((element) => element.id == widget.id);
+          final topRecord = challenge.records!.reduce(
+              (current, next) => current.streak > next.streak ? current : next);
+          final userRecord = challenge.records!
+              .firstWhere((element) => element.user.email == user.email);
+          final canRecord = userRecord.lastUpdated == null ||
+              userRecord.lastUpdated!.difference(DateTime.now()).inDays <= -1;
+
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Desafio'),
+              centerTitle: true,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+            body: PaddedScrollView(
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          challenge.name,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 25),
+                    Row(
+                      children: [
+                        ChallengeRecordCard(
+                          title: "Maior recorde",
+                          record: topRecord,
+                        ),
+                        SizedBox(width: width * 0.1),
+                        ChallengeRecordCard(
+                          title: "Seu recorde",
+                          record: userRecord,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 25),
+                    if (canRecord)
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () => widget.bloc.add(
+                                  RecordChallengeSubmitted(
+                                      challenge.id!, user)),
+                              child: const Text(
+                                'Registrar',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   Future<void> _sendChallengeRequest(

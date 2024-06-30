@@ -35,9 +35,8 @@ public class ChallengeRecord {
     @Temporal(TemporalType.DATE)
     private Date createdAt;
 
-    @LastModifiedDate
     @Temporal(TemporalType.DATE)
-    private Date lastModified;
+    private Date lastUpdated;
 
     private long streak = 0;
 }

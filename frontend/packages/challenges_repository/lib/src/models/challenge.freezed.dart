@@ -21,9 +21,11 @@ Challenge _$ChallengeFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Challenge {
   String get name => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
   User? get creator => throw _privateConstructorUsedError;
-  List<User>? get participants => throw _privateConstructorUsedError;
   DateTime? get finishesAt => throw _privateConstructorUsedError;
+  List<User>? get participants => throw _privateConstructorUsedError;
+  List<ChallengeRecord>? get records => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,9 +40,11 @@ abstract class $ChallengeCopyWith<$Res> {
   @useResult
   $Res call(
       {String name,
+      String? id,
       User? creator,
+      DateTime? finishesAt,
       List<User>? participants,
-      DateTime? finishesAt});
+      List<ChallengeRecord>? records});
 
   $UserCopyWith<$Res>? get creator;
 }
@@ -59,27 +63,37 @@ class _$ChallengeCopyWithImpl<$Res, $Val extends Challenge>
   @override
   $Res call({
     Object? name = null,
+    Object? id = freezed,
     Object? creator = freezed,
-    Object? participants = freezed,
     Object? finishesAt = freezed,
+    Object? participants = freezed,
+    Object? records = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       creator: freezed == creator
           ? _value.creator
           : creator // ignore: cast_nullable_to_non_nullable
               as User?,
-      participants: freezed == participants
-          ? _value.participants
-          : participants // ignore: cast_nullable_to_non_nullable
-              as List<User>?,
       finishesAt: freezed == finishesAt
           ? _value.finishesAt
           : finishesAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      participants: freezed == participants
+          ? _value.participants
+          : participants // ignore: cast_nullable_to_non_nullable
+              as List<User>?,
+      records: freezed == records
+          ? _value.records
+          : records // ignore: cast_nullable_to_non_nullable
+              as List<ChallengeRecord>?,
     ) as $Val);
   }
 
@@ -106,9 +120,11 @@ abstract class _$$ChallengeImplCopyWith<$Res>
   @useResult
   $Res call(
       {String name,
+      String? id,
       User? creator,
+      DateTime? finishesAt,
       List<User>? participants,
-      DateTime? finishesAt});
+      List<ChallengeRecord>? records});
 
   @override
   $UserCopyWith<$Res>? get creator;
@@ -126,27 +142,37 @@ class __$$ChallengeImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = null,
+    Object? id = freezed,
     Object? creator = freezed,
-    Object? participants = freezed,
     Object? finishesAt = freezed,
+    Object? participants = freezed,
+    Object? records = freezed,
   }) {
     return _then(_$ChallengeImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       creator: freezed == creator
           ? _value.creator
           : creator // ignore: cast_nullable_to_non_nullable
               as User?,
-      participants: freezed == participants
-          ? _value._participants
-          : participants // ignore: cast_nullable_to_non_nullable
-              as List<User>?,
       finishesAt: freezed == finishesAt
           ? _value.finishesAt
           : finishesAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      participants: freezed == participants
+          ? _value._participants
+          : participants // ignore: cast_nullable_to_non_nullable
+              as List<User>?,
+      records: freezed == records
+          ? _value._records
+          : records // ignore: cast_nullable_to_non_nullable
+              as List<ChallengeRecord>?,
     ));
   }
 }
@@ -156,10 +182,13 @@ class __$$ChallengeImplCopyWithImpl<$Res>
 class _$ChallengeImpl implements _Challenge {
   const _$ChallengeImpl(
       {required this.name,
+      this.id,
       this.creator,
+      this.finishesAt,
       final List<User>? participants,
-      this.finishesAt})
-      : _participants = participants;
+      final List<ChallengeRecord>? records})
+      : _participants = participants,
+        _records = records;
 
   factory _$ChallengeImpl.fromJson(Map<String, dynamic> json) =>
       _$$ChallengeImplFromJson(json);
@@ -167,7 +196,11 @@ class _$ChallengeImpl implements _Challenge {
   @override
   final String name;
   @override
+  final String? id;
+  @override
   final User? creator;
+  @override
+  final DateTime? finishesAt;
   final List<User>? _participants;
   @override
   List<User>? get participants {
@@ -178,12 +211,19 @@ class _$ChallengeImpl implements _Challenge {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<ChallengeRecord>? _records;
   @override
-  final DateTime? finishesAt;
+  List<ChallengeRecord>? get records {
+    final value = _records;
+    if (value == null) return null;
+    if (_records is EqualUnmodifiableListView) return _records;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'Challenge(name: $name, creator: $creator, participants: $participants, finishesAt: $finishesAt)';
+    return 'Challenge(name: $name, id: $id, creator: $creator, finishesAt: $finishesAt, participants: $participants, records: $records)';
   }
 
   @override
@@ -192,17 +232,25 @@ class _$ChallengeImpl implements _Challenge {
         (other.runtimeType == runtimeType &&
             other is _$ChallengeImpl &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.creator, creator) || other.creator == creator) &&
+            (identical(other.finishesAt, finishesAt) ||
+                other.finishesAt == finishesAt) &&
             const DeepCollectionEquality()
                 .equals(other._participants, _participants) &&
-            (identical(other.finishesAt, finishesAt) ||
-                other.finishesAt == finishesAt));
+            const DeepCollectionEquality().equals(other._records, _records));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, creator,
-      const DeepCollectionEquality().hash(_participants), finishesAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      name,
+      id,
+      creator,
+      finishesAt,
+      const DeepCollectionEquality().hash(_participants),
+      const DeepCollectionEquality().hash(_records));
 
   @JsonKey(ignore: true)
   @override
@@ -221,9 +269,11 @@ class _$ChallengeImpl implements _Challenge {
 abstract class _Challenge implements Challenge {
   const factory _Challenge(
       {required final String name,
+      final String? id,
       final User? creator,
+      final DateTime? finishesAt,
       final List<User>? participants,
-      final DateTime? finishesAt}) = _$ChallengeImpl;
+      final List<ChallengeRecord>? records}) = _$ChallengeImpl;
 
   factory _Challenge.fromJson(Map<String, dynamic> json) =
       _$ChallengeImpl.fromJson;
@@ -231,11 +281,15 @@ abstract class _Challenge implements Challenge {
   @override
   String get name;
   @override
+  String? get id;
+  @override
   User? get creator;
+  @override
+  DateTime? get finishesAt;
   @override
   List<User>? get participants;
   @override
-  DateTime? get finishesAt;
+  List<ChallengeRecord>? get records;
   @override
   @JsonKey(ignore: true)
   _$$ChallengeImplCopyWith<_$ChallengeImpl> get copyWith =>

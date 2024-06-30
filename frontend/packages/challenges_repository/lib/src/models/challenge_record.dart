@@ -1,34 +1,53 @@
 import 'dart:convert';
 
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:user_repository/user_repository.dart';
+
 class ChallengeRecord {
-  int day;
-  ChallengeRecord({
-    required this.day,
+  final int streak;
+  final DateTime? lastUpdated;
+  final User user;
+
+  const ChallengeRecord({
+    required this.streak,
+    required this.user,
+    this.lastUpdated,
   });
 
   ChallengeRecord copyWith({
-    int? day,
-    int? month,
-    int? year,
+    int? streak,
+    User? user,
+    DateTime? lastUpdated,
   }) {
-    return ChallengeRecord(day: day ?? this.day);
+    return ChallengeRecord(
+      streak: streak ?? this.streak,
+      user: user ?? this.user,
+      lastUpdated: lastUpdated ?? this.lastUpdated,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{'day': day};
+    return <String, dynamic>{
+      'streak': streak,
+      'user': user.toJson(),
+      'last_updated': lastUpdated?.millisecondsSinceEpoch
+    };
   }
 
   factory ChallengeRecord.fromMap(Map<String, dynamic> map) {
-    return ChallengeRecord(day: map['day'] as int);
+    return ChallengeRecord(
+        streak: map['streak'] as int,
+        user: User.fromMap(map['user'] as Map<String, dynamic>),
+        lastUpdated: map['last_updated'] != null
+            ? DateTime.parse(map['last_updated'])
+            : null);
+  }
+
+  static List<ChallengeRecord> fromMapList(List<dynamic> sourceList) {
+    return sourceList.map((source) => ChallengeRecord.fromMap(source)).toList();
   }
 
   String toJson() => json.encode(toMap());
 
   factory ChallengeRecord.fromJson(String source) =>
       ChallengeRecord.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  static fromMapList(List<dynamic> map) {
-    return map.map((record) => ChallengeRecord(day: record['day'])).toList();
-  }
 }

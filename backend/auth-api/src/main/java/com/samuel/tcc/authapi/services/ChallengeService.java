@@ -20,7 +20,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -48,12 +52,20 @@ public class ChallengeService {
         Date finishesAt = EpochConverter.convert(dto.finishesAt());
 
         Challenge challenge = new Challenge();
+
+        ChallengeRecord record = new ChallengeRecord();
+        record.setChallenge(challenge);
+        record.setStreak(0);
+        record.setUser(user);
+
         challenge.setCreator(user);
-        challenge.getParticipants().add(user);
         challenge.setFinishesAt(finishesAt);
         challenge.setName(dto.name());
+        challenge.getParticipants().add(user);
+        challenge.getRecords().add(record);
 
         _repository.save(challenge);
+        _recordRepository.save(record);
 
         return _mapper.entityToDTO(challenge);
     }
@@ -65,6 +77,14 @@ public class ChallengeService {
         ChallengeRecord record;
         if(optRecord.isPresent()) {
             record = optRecord.get();
+
+            var lastUpdated = optRecord.get().getLastUpdated();
+            if(lastUpdated != null) {
+                LocalDate lastUpdatedDate = lastUpdated.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate today = LocalDate.now();
+                long daysBetween = ChronoUnit.DAYS.between(lastUpdatedDate, today);
+                if(daysBetween < 1) return;
+            }
         }
         else {
             User user = _userService.getUserByEmail(userEmail).orElseThrow(UserNotFoundException::new);
@@ -75,6 +95,7 @@ public class ChallengeService {
         }
 
         record.setStreak(record.getStreak() + 1);
+        record.setLastUpdated(new Date());
 
         _recordRepository.save(record);
     }
