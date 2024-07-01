@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:tcc/components/padded_scrollview.dart';
 import 'package:tcc/friends/bloc/friends_bloc.dart';
-import 'package:tcc/friends/components/friend_request_card.dart';
+import 'package:tcc/components/request_card.dart';
 
 class FriendsRequestPage extends StatefulWidget {
   const FriendsRequestPage({super.key});
@@ -41,8 +42,23 @@ class _FriendsRequestPageState extends State<FriendsRequestPage> {
                       child: Text('Você não tem nenhum pedido de amizade!'))
                   : Column(
                       children: bloc.state.requests
-                          .map((request) => FriendRequestCard(
-                              friendRequest: request, bloc: bloc))
+                          .map((request) => RequestCard(
+                                title:
+                                    '${request.requester.name} quer ser seu amigo!',
+                                subTitle:
+                                    "${request.requester.email}\n${DateFormat('kk:mm dd/MM/yy').format(request.date)}",
+                                handleAccept: () =>
+                                    bloc.add(FriendRequestStateChanged(
+                                  request.requester.email,
+                                  accepted: true,
+                                )),
+                                handleRefuse: () => bloc.add(
+                                  FriendRequestStateChanged(
+                                    request.requester.email,
+                                    accepted: false,
+                                  ),
+                                ),
+                              ))
                           .toList(),
                     );
             },

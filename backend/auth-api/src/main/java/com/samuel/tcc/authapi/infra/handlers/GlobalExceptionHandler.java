@@ -27,9 +27,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(FriendRequestNotFoundException.class)
+    @ExceptionHandler(RequestNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<CustomError> handleFriendRequestNotFoundException(FriendRequestNotFoundException ex) {
+    public ResponseEntity<CustomError> handleFriendRequestNotFoundException(RequestNotFoundException ex) {
         CustomError error = new CustomError(ex.getErrorCode(), ex.getMessage());
 
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
@@ -70,6 +70,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IncorrectFormatException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<CustomError> handleIncorrectFormat(IncorrectFormatException ex) {
+        CustomError error = new CustomError(ex.getErrorCode(), ex.getMessage());
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmailsAreEqualException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<CustomError> handleIncorrectFormat(EmailsAreEqualException ex) {
         CustomError error = new CustomError(ex.getErrorCode(), ex.getMessage());
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);

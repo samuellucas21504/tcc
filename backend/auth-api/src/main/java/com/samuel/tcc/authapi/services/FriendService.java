@@ -5,7 +5,7 @@ import com.samuel.tcc.authapi.entities.user.FriendRequest;
 import com.samuel.tcc.authapi.entities.user.User;
 import com.samuel.tcc.authapi.infra.mappers.FriendRequestMapper;
 import com.samuel.tcc.authapi.repositories.user.FriendRequestRepository;
-import com.samuel.tcc.authapi.services.exceptions.FriendRequestNotFoundException;
+import com.samuel.tcc.authapi.services.exceptions.RequestNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +32,7 @@ public class FriendService {
     @Transactional
     public void inactivateFriendRequest(String requesterEmail, String userEmail) {
         var friendRequest = _friendRequestRepository
-                .findFriendRequestByUserAndRequesterEmail(requesterEmail, userEmail).orElseThrow(FriendRequestNotFoundException::new);
+                .findFriendRequestByUserAndRequesterEmail(requesterEmail, userEmail).orElseThrow(RequestNotFoundException::new);
 
         friendRequest.setActive(false);
         _friendRequestRepository.save(friendRequest);

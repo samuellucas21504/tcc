@@ -9,12 +9,12 @@ part 'challenges_state.dart';
 class ChallengesBloc extends Bloc<ChallengesEvent, ChallengesState> {
   ChallengesBloc({required ChallengesRepository repository})
       : _repository = repository,
-        super(ChallengesState.unknown()) {
+        super(const ChallengesState.unknown()) {
     on<FetchChallenges>(_handleFetchChallenges);
     on<ChallengeCreationRequest>(_handleCreateChallengeRequest);
     on<ChallengeRequestSubmitted>(_handleChallengeRequestSubmitted);
     on<ChallengeRequestStateChanged>(_handleChallengeRequestStateChanged);
-    on<RecordChallengeSubmitted>(_handleRecordChallenge);
+    on<RecordChallengeSubmitted>(_handleRecordChallengeSubmitted);
   }
 
   final ChallengesRepository _repository;
@@ -22,10 +22,9 @@ class ChallengesBloc extends Bloc<ChallengesEvent, ChallengesState> {
   Future _handleFetchChallenges(
       FetchChallenges event, Emitter<ChallengesState> emit) async {
     try {
-      emit(ChallengesState.fetching());
+      emit(const ChallengesState.fetching());
 
       await _repository.getChallenges().then((dto) {
-        print('@a ${dto.challenges}');
         emit(ChallengesState.loaded(dto.challenges, dto.requests));
       });
     } catch (_) {
@@ -37,14 +36,14 @@ class ChallengesBloc extends Bloc<ChallengesEvent, ChallengesState> {
       ChallengeCreationRequest event, Emitter<ChallengesState> emit) async {
     try {
       await _repository.register(event.name, event.finishesAt).then((dto) {
-        emit(ChallengesState.created());
+        emit(const ChallengesState.created());
       });
     } catch (_) {
       print("@a $_");
     }
   }
 
-  Future _handleRecordChallenge(
+  Future _handleRecordChallengeSubmitted(
       RecordChallengeSubmitted event, Emitter<ChallengesState> emit) async {
     try {
       await _repository.record(event.challengeId);
@@ -76,21 +75,30 @@ class ChallengesBloc extends Bloc<ChallengesEvent, ChallengesState> {
 
   Future _handleChallengeRequestSubmitted(
       ChallengeRequestSubmitted event, Emitter<ChallengesState> emit) async {
-    // try {
-    //   await _repository.sendFriendRequest(event.email);
-    // } catch (_) {
-    //   print(_);
-    // }
+    try {
+      await _repository.sendChallengeInvitation(event.email, event.challengeId);
+    } catch (_) {
+      print(_);
+    }
   }
 
   Future _handleChallengeRequestStateChanged(
       ChallengeRequestStateChanged event, Emitter<ChallengesState> emit) async {
-    // try {
-    //   await _repository.handleFriendRequest(event.email, event.accepted);
-    //   state.requests
-    //       .removeWhere((element) => element.requester.email == event.email);
-    //   emit(ChallengesState.loaded(state.friends, state.requests));
-    //   add(const FetchChallenges());
-    // } catch (_) {}
+    try {
+      await _repository.handleChallengeRequest(
+        event.email,
+        event.accepted,
+        event.challengeId,
+      );
+      List<ChallengeRequest> updatedRequests = List.from(state.requests);
+      updatedRequests.removeWhere((element) =>
+          element.requester.email == event.email &&
+          element.challenge.id! == event.challengeId);
+
+      emit(ChallengesState.loaded(state.challenges, updatedRequests));
+      add(const FetchChallenges());
+    } catch (_) {
+      print(_);
+    }
   }
 }

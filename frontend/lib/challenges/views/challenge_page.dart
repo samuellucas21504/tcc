@@ -1,3 +1,4 @@
+import 'package:challenges_repository/challenges_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcc/authentication/bloc/authentication/authentication_bloc.dart';
@@ -31,7 +32,12 @@ class _ChallengePageState extends State<ChallengePage> {
               context.select((AuthenticationBloc bloc) => bloc.state.user);
           final challenge =
               state.challenges.firstWhere((element) => element.id == widget.id);
-          final topRecord = challenge.records!.reduce(
+
+          for (ChallengeRecord record in challenge.records ?? []) {
+            print(record.user.email);
+          }
+
+          final topRecord = List.of(challenge.records!).reduce(
               (current, next) => current.streak > next.streak ? current : next);
           final userRecord = challenge.records!
               .firstWhere((element) => element.user.email == user.email);
@@ -46,6 +52,19 @@ class _ChallengePageState extends State<ChallengePage> {
                 icon: const Icon(Icons.arrow_back_ios),
                 onPressed: () => Navigator.pop(context),
               ),
+              actions: [
+                TextButton(
+                  onPressed: () => _sendChallengeRequest(
+                    context,
+                    widget.bloc,
+                    challenge.id!,
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.only(right: 15),
+                    child: Text('Convidar'),
+                  ),
+                )
+              ],
             ),
             body: PaddedScrollView(
               child: Center(
@@ -106,20 +125,19 @@ class _ChallengePageState extends State<ChallengePage> {
   }
 
   Future<void> _sendChallengeRequest(
-      BuildContext context, ChallengesBloc bloc) {
+      BuildContext context, ChallengesBloc bloc, String challengeId) {
     String email = '';
 
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Enviar pedido de Amizade'),
+          title: const Text('Enviar convite de desafio'),
           content: SizedBox(
             height: 120,
             child: Column(
               children: [
-                const Text(
-                    'Digite o email do usuário que você quer adicionar:'),
+                const Text('Digite o email do usuário que você quer convidar:'),
                 const SizedBox(height: 20),
                 TextField(
                   onChanged: (value) => email = value,
@@ -138,7 +156,7 @@ class _ChallengePageState extends State<ChallengePage> {
               child: const Text('Enviar'),
               onPressed: () {
                 Navigator.pop(context);
-                // bloc.add((email));
+                bloc.add(ChallengeRequestSubmitted(email, challengeId));
               },
             ),
           ],

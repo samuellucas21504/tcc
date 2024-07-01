@@ -82,7 +82,7 @@ class AuthenticationRepository {
     _controller.add(AuthenticationStatus.authenticated);
   }
 
-  Future<void> logIn({
+  Future<User> logIn({
     required String email,
     required String password,
   }) async {
@@ -93,13 +93,14 @@ class AuthenticationRepository {
 
     final data = response.data;
     final headers = response.headers;
-
     final dto = User.fromMap(data);
 
     await _userRepository.changeUser(dto);
     await _saveToken(headers['token']!.first);
 
     _controller.add(AuthenticationStatus.authenticated);
+
+    return dto;
   }
 
   void userAddedHabit() {
@@ -108,8 +109,8 @@ class AuthenticationRepository {
 
   Future logOut() async {
     await _deleteToken();
+    await _userRepository.logout();
     _controller.add(AuthenticationStatus.unauthenticated);
-    _userRepository.logout();
   }
 
   void dispose() => _controller.close();

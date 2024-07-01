@@ -21,13 +21,21 @@ final class ChallengeCreated extends ChallengesEvent {}
 
 final class ChallengeRequestSubmitted extends ChallengesEvent {
   final String email;
-  const ChallengeRequestSubmitted(this.email);
+  final String challengeId;
+
+  const ChallengeRequestSubmitted(this.email, this.challengeId);
 }
 
 final class ChallengeRequestStateChanged extends ChallengesEvent {
   final String email;
   final bool accepted;
-  const ChallengeRequestStateChanged(this.email, {this.accepted = false});
+  final String challengeId;
+
+  const ChallengeRequestStateChanged(
+    this.email, {
+    required this.challengeId,
+    this.accepted = false,
+  });
 }
 
 final class RecordChallengeSubmitted extends ChallengesEvent {

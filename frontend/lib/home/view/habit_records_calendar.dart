@@ -99,7 +99,8 @@ class _HabitRecordsCalendarState extends State {
         .select((HabitRecordCubit bloc) => (bloc.state as HabitRecordLoaded));
     final disabledColor = Theme.of(context).colorScheme.surface;
 
-    final isButtonActive = !user.registeredAt!.isSameMonthAs(state.monthShow);
+    final isButtonActive =
+        !(user.registeredAt?.isSameMonthAs(state.monthShow) ?? false);
 
     return Expanded(
       flex: 1,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcc/challenges/bloc/challenges_bloc.dart';
 import 'package:tcc/challenges/views/challenges_list.dart';
+import 'package:tcc/challenges/views/challenges_requests_page.dart';
 import 'package:tcc/challenges/views/create_challenge_view.dart';
 import 'package:tcc/drawer/views/drawer.dart';
 import 'package:tcc/drawer/components/menu_button.dart';
@@ -50,17 +51,15 @@ class _ChallengesPageState extends State<ChallengesPage> {
               if (state.status == ChallengesStatus.loaded) {
                 return IconButton(
                     onPressed: () {
-                      // TODO - Adicionar
-                      // Navigator.push(context, FriendsRequestPage.route(context));
+                      Navigator.push(
+                          context, ChallengesRequestsPage.route(context));
                     },
                     icon: NotificationBell(
                       notificationQuantity:
                           context.read<ChallengesBloc>().state.requests.length,
                     ));
               } else {
-                return const NotificationBell(
-                  notificationQuantity: 0,
-                );
+                return const NotificationBell(notificationQuantity: 0);
               }
             },
           ),

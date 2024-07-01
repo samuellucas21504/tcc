@@ -52,27 +52,27 @@ public class ChallengeController {
 
         return ResponseEntity.ok().build();
     }
-//
-//
-//    @PostMapping(value = "/request/accept")
-//    public ResponseEntity acceptFriendRequest(
-//            @RequestHeader("Authorization") String bearerToken,
-//            @RequestBody FriendRequestBodyDTO requesterEmail
-//    ) {
-//        String userEmail = _tokenService.validateBearerToken(bearerToken);
-//        _userService.acceptFriendRequest(requesterEmail.email(), userEmail);
-//
-//        return ResponseEntity.ok().build();
-//    }
-//
-//    @PostMapping(value = "/request/refuse")
-//    public ResponseEntity refuseFriendRequest(
-//            @RequestHeader("Authorization") String bearerToken,
-//            @RequestBody FriendRequestBodyDTO requesterEmail
-//    ) {
-//        String userEmail = _tokenService.validateBearerToken(bearerToken);
-//        _friendService.inactivateFriendRequest(requesterEmail.email(), userEmail);
-//
-//        return ResponseEntity.ok().build();
-//    }
+
+
+    @PostMapping(value = "/request/accept")
+    public ResponseEntity acceptChallengeRequest(
+            @RequestHeader("Authorization") String bearerToken,
+            @RequestBody ChallengeRequestBodyDTO challengeRequest
+    ) {
+        String userEmail = _tokenService.validateBearerToken(bearerToken);
+        _challengeService.acceptChallengeRequest(challengeRequest.email(), userEmail, challengeRequest.challengeId());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/request/refuse")
+    public ResponseEntity refuseChallengeRequest(
+            @RequestHeader("Authorization") String bearerToken,
+            @RequestBody ChallengeRequestBodyDTO challengeRequest
+    ) {
+        String userEmail = _tokenService.validateBearerToken(bearerToken);
+        _challengeService.inactivateChallengeRequest(challengeRequest.email(), userEmail, challengeRequest.challengeId());
+
+        return ResponseEntity.ok().build();
+    }
 }

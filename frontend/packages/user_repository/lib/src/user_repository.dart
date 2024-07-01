@@ -25,6 +25,7 @@ class UserRepository {
   }
 
   Future logout() async {
+    _user = null;
     await _storageRepository.delete(User.key);
   }
 }

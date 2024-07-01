@@ -12,9 +12,7 @@ import com.samuel.tcc.authapi.infra.mappers.ChallengeMapper;
 import com.samuel.tcc.authapi.repositories.challenge.ChallengeRecordRepository;
 import com.samuel.tcc.authapi.repositories.challenge.ChallengeRepository;
 import com.samuel.tcc.authapi.repositories.challenge.ChallengeRequestRepository;
-import com.samuel.tcc.authapi.services.exceptions.ChallengeNotFoundException;
-import com.samuel.tcc.authapi.services.exceptions.IncorrectFormatException;
-import com.samuel.tcc.authapi.services.exceptions.UserNotFoundException;
+import com.samuel.tcc.authapi.services.exceptions.*;
 import com.samuel.tcc.authapi.utils.EpochConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +22,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,6 +34,14 @@ public class ChallengeService {
     private final ChallengeRequestRepository _requestRepository;
     private final UserService _userService;
     private final ChallengeMapper _mapper;
+
+    private ChallengeRecord createChallengeRecord(Challenge challenge, User user) {
+        ChallengeRecord record = new ChallengeRecord();
+        record.setChallenge(challenge);
+        record.setStreak(0);
+        record.setUser(user);
+        return record;
+    }
 
     public ChallengeResponseDTO getUserChallenges(String userEmail) {
         var challenges = _repository.findUserChallenges(userEmail);
@@ -52,11 +59,7 @@ public class ChallengeService {
         Date finishesAt = EpochConverter.convert(dto.finishesAt());
 
         Challenge challenge = new Challenge();
-
-        ChallengeRecord record = new ChallengeRecord();
-        record.setChallenge(challenge);
-        record.setStreak(0);
-        record.setUser(user);
+        var record = createChallengeRecord(challenge, user);
 
         challenge.setCreator(user);
         challenge.setFinishesAt(finishesAt);
@@ -105,7 +108,10 @@ public class ChallengeService {
         var challenger = _userService.getUserByEmail(requesterEmail).orElseThrow(UserNotFoundException::new);
         var challenged = _userService.getUserByEmail(dto.email()).orElseThrow(UserNotFoundException::new);
 
+        if(Objects.equals(challenger.getEmail(), challenged.getEmail())) throw new EmailsAreEqualException();
+
         var challenge = _repository.findById(dto.challengeId()).orElseThrow(ChallengeNotFoundException::new);
+        if(challenge.getParticipants().contains(challenged)) return;
 
         ChallengeRequest challengeRequest = new ChallengeRequest();
         challengeRequest.setChallenger(challenger);
@@ -114,5 +120,39 @@ public class ChallengeService {
         challengeRequest.setActive(true);
 
         _requestRepository.save(challengeRequest);
+    }
+
+    @Transactional
+    public void acceptChallengeRequest(String requesterEmail, String userEmail, UUID challengeId) {
+        if (requesterEmail.equals(userEmail)) {
+            throw new EmailsAreEqualException();
+        }
+
+        inactivateChallengeRequest(requesterEmail, userEmail, challengeId);
+
+        User challenger = _userService.getUserByEmail(requesterEmail).orElseThrow(UserNotFoundException::new);
+        User challenged = _userService.getUserByEmail(userEmail).orElseThrow(UserNotFoundException::new);
+
+        Challenge challenge = _repository.findById(challengeId).orElseThrow(ChallengeNotFoundException::new);
+        if (!challenge.getParticipants().contains(challenger)) throw new UserNotInChallengeException();
+
+        if (!challenge.getParticipants().contains(challenged)) {
+            var record = createChallengeRecord(challenge, challenged);
+
+            challenge.getParticipants().add(challenged);
+            challenge.getRecords().add(record);
+
+            _repository.save(challenge);
+        }
+    }
+
+
+    @Transactional
+    public void inactivateChallengeRequest(String requesterEmail, String userEmail, UUID id) {
+        var request = _requestRepository
+                .findFriendRequestByUserAndRequesterEmail(requesterEmail, userEmail, id).orElseThrow(RequestNotFoundException::new);
+
+        request.setActive(false);
+        _requestRepository.save(request);
     }
 }

@@ -26,9 +26,6 @@ class ChallengesRepository {
       "finishes_at": finishesAt.millisecondsSinceEpoch,
     };
 
-    print(body);
-    print(jsonEncode(body));
-
     try {
       Response response =
           await _dio.post('${Constants.url}', data: jsonEncode(body));
@@ -53,7 +50,7 @@ class ChallengesRepository {
 
     Response response = await _dio.get('${Constants.url}');
     final data = response.data;
-    print('@a ${data}');
+    print(data);
 
     final challenge = ChallengeDTO(
       challenges: Challenge.fromMapList(data["challenges"]),
@@ -90,5 +87,39 @@ class ChallengesRepository {
     print(url);
 
     await _dio.post(url);
+  }
+
+  Future sendChallengeInvitation(String email, String id) async {
+    final _dio = Dio();
+    final bearerToken = await _authenticationRepository.getBearerToken();
+    _dio.options.headers["Authorization"] = bearerToken;
+
+    final url = '${Constants.url}/request';
+    print(url);
+
+    final body = {
+      "id": id,
+      "email": email,
+    };
+
+    await _dio.post(
+      url,
+      data: body,
+    );
+  }
+
+  Future handleChallengeRequest(
+      String email, bool accepted, String challengeId) async {
+    final dio = Dio();
+    final bearerToken = await _authenticationRepository.getBearerToken();
+
+    dio.setBearerToken(bearerToken);
+
+    final endpoint = accepted ? 'accept' : 'refuse';
+
+    await dio.post('${Constants.url}/request/$endpoint', data: {
+      "email": email,
+      "id": challengeId,
+    });
   }
 }
